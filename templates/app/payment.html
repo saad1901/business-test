@@ -1,0 +1,203 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Payment - Order #{{ order.order_id }}{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <!-- Order Summary -->
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-success text-white">
+                    <h5 class="mb-0">
+                        <i class="bi bi-check-circle me-2"></i>Order Created Successfully!
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h6>Order ID</h6>
+                            <p class="text-muted">{{ order.order_id }}</p>
+                            
+                            <h6>Customer</h6>
+                            <p class="text-muted">{{ order.full_name }}</p>
+                            
+                            <h6>Mobile</h6>
+                            <p class="text-muted">{{ order.mobile_number }}</p>
+                        </div>
+                        <div class="col-md-6">
+                            <h6>Total Amount</h6>
+                            <p class="h4 text-success">₹{{ order.total_amount }}</p>
+                            
+                            <h6>Status</h6>
+                            <span class="badge bg-warning">{{ order.get_status_display }}</span>
+                        </div>
+                    </div>
+                    
+                    <hr>
+                    
+                    <h6>Order Items</h6>
+                    {% for item in order.items.all %}
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <div>
+                                <strong>{{ item.product.name }}</strong>
+                                <small class="text-muted d-block">
+                                    {% if item.customization.custom_text %}
+                                        Text: "{{ item.customization.custom_text }}"
+                                    {% endif %}
+                                    {% if item.customization.custom_image %}
+                                        <br>Photo uploaded
+                                    {% endif %}
+                                </small>
+                            </div>
+                            <div class="text-end">
+                                <div>{{ item.quantity }} × ₹{{ item.unit_price }}</div>
+                                <strong>₹{{ item.total_price }}</strong>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+            
+            <!-- Payment Instructions -->
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">
+                        <i class="bi bi-credit-card me-2"></i>Complete Your Payment
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="row g-4">
+                        <!-- UPI Payment -->
+                        <div class="col-md-6">
+                            <h6 class="text-primary">
+                                <i class="bi bi-phone me-2"></i>Pay via UPI
+                            </h6>
+                            
+                            <div class="text-center mb-3">
+                                <!-- QR Code Placeholder -->
+                                <div class="bg-light border rounded p-4 mb-3" style="width: 200px; height: 200px; margin: 0 auto;">
+                                    <div class="d-flex align-items-center justify-content-center h-100">
+                                        <div class="text-center">
+                                            <i class="bi bi-qr-code" style="font-size: 3rem;"></i>
+                                            <p class="small text-muted mt-2">UPI QR Code</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="alert alert-info">
+                                    <strong>UPI ID:</strong> {{ upi_details.upi_id }}<br>
+                                    <strong>Amount:</strong> ₹{{ upi_details.amount }}<br>
+                                    <strong>Merchant:</strong> {{ upi_details.merchant_name }}
+                                </div>
+                            </div>
+                            
+                            <div class="alert alert-warning">
+                                <h6 class="alert-heading">
+                                    <i class="bi bi-exclamation-triangle me-2"></i>Important Instructions
+                                </h6>
+                                <ol class="mb-0 small">
+                                    <li>Scan the QR code or use the UPI ID above</li>
+                                    <li>Pay the exact amount: <strong>₹{{ order.total_amount }}</strong></li>
+                                    <li>Take a screenshot of the payment confirmation</li>
+                                    <li>Upload the screenshot below</li>
+                                </ol>
+                            </div>
+                        </div>
+                        
+                        <!-- Upload Payment Proof -->
+                        <div class="col-md-6">
+                            <h6 class="text-primary">
+                                <i class="bi bi-cloud-upload me-2"></i>Upload Payment Proof
+                            </h6>
+                            
+                            <form method="post" enctype="multipart/form-data">
+                                {% csrf_token %}
+                                
+                                <div class="mb-3">
+                                    <label for="{{ payment_form.screenshot.id_for_label }}" class="form-label">
+                                        Payment Screenshot <span class="text-danger">*</span>
+                                    </label>
+                                    {{ payment_form.screenshot }}
+                                    <div class="form-text">Upload a clear screenshot of your payment confirmation</div>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label for="{{ payment_form.upi_transaction_id.id_for_label }}" class="form-label">
+                                        UPI Transaction ID (Optional)
+                                    </label>
+                                    {{ payment_form.upi_transaction_id }}
+                                    <div class="form-text">Enter the transaction ID if available</div>
+                                </div>
+                                
+                                <div class="d-grid">
+                                    <button type="submit" class="btn btn-success btn-lg">
+                                        <i class="bi bi-check-circle me-2"></i>Submit Payment Proof
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Help Section -->
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h6 class="text-primary">
+                        <i class="bi bi-question-circle me-2"></i>Need Help?
+                    </h6>
+                    <p class="mb-2">If you face any issues with payment, please contact us:</p>
+                    <ul class="list-unstyled mb-0">
+                        <li><i class="bi bi-whatsapp me-2 text-success"></i>WhatsApp: +91 XXXXXXXXXX</li>
+                        <li><i class="bi bi-envelope me-2 text-primary"></i>Email: support@customresinart.com</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+.qr-code-placeholder {
+    background: repeating-linear-gradient(
+        45deg,
+        #f8f9fa,
+        #f8f9fa 10px,
+        #e9ecef 10px,
+        #e9ecef 20px
+    );
+}
+</style>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Preview uploaded image
+    const fileInput = document.getElementById('{{ payment_form.screenshot.id_for_label }}');
+    
+    fileInput.addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (file) {
+            // Validate file type
+            if (!file.type.startsWith('image/')) {
+                alert('Please upload a valid image file.');
+                e.target.value = '';
+                return;
+            }
+            
+            // Validate file size (max 5MB)
+            if (file.size > 5 * 1024 * 1024) {
+                alert('File size should be less than 5MB.');
+                e.target.value = '';
+                return;
+            }
+        }
+    });
+});
+</script>
+{% endblock %}

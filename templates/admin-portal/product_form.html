@@ -1,0 +1,282 @@
+{% extends 'admin-portal/base.html' %}
+{% load static %}
+
+{% block title %}{{ title }} - Admin Portal{% endblock %}
+
+{% block content %}
+
+<div class="row mb-3 mb-md-4">
+    <div class="col-12">
+        <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+            <div>
+                <h2 class="mb-0 h4 h-md-2">
+                    <i class="bi bi-box me-2 text-primary"></i>{{ title }}
+                </h2>
+                <small class="text-muted d-block">Configure product details</small>
+            </div>
+            <a href="{% url 'admin_products' %}" class="btn btn-outline-secondary btn-sm">
+                <i class="bi bi-arrow-left me-1"></i><span class="d-none d-sm-inline">Back</span>
+            </a>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12 col-lg-8">
+        <div class="card shadow-sm">
+            <div class="card-header bg-light border-bottom">
+                <h5 class="mb-0">Product Information</h5>
+            </div>
+            <div class="card-body">
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    
+                    <!-- Basic Information -->
+                    <div class="mb-4">
+                        <h6 class="text-uppercase text-muted small mb-3">
+                            <i class="bi bi-info-circle me-2"></i>Basic Information
+                        </h6>
+                        
+                        <div class="mb-3">
+                            <label for="{{ form.name.id_for_label }}" class="form-label fw-bold">Product Name <span class="text-danger">*</span></label>
+                            {{ form.name }}
+                            {% if form.name.errors %}
+                                <div class="text-danger small mt-1">{{ form.name.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="{{ form.description.id_for_label }}" class="form-label fw-bold">Description <span class="text-danger">*</span></label>
+                            {{ form.description }}
+                            {% if form.description.errors %}
+                                <div class="text-danger small mt-1">{{ form.description.errors.0 }}</div>
+                            {% endif %}
+                            <small class="form-text text-muted">Detailed description of the product</small>
+                        </div>
+                    </div>
+
+                    <!-- Pricing & Customization -->
+                    <div class="mb-4">
+                        <h6 class="text-uppercase text-muted small mb-3">
+                            <i class="bi bi-cash me-2"></i>Pricing & Customization
+                        </h6>
+                        
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="{{ form.base_price.id_for_label }}" class="form-label fw-bold">Base Price (₹) <span class="text-danger">*</span></label>
+                                {{ form.base_price }}
+                                {% if form.base_price.errors %}
+                                    <div class="text-danger small mt-1">{{ form.base_price.errors.0 }}</div>
+                                {% endif %}
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label for="{{ form.customization_type.id_for_label }}" class="form-label fw-bold">Customization Type <span class="text-danger">*</span></label>
+                                {{ form.customization_type }}
+                                {% if form.customization_type.errors %}
+                                    <div class="text-danger small mt-1">{{ form.customization_type.errors.0 }}</div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Product Images -->
+                    <div class="mb-4">
+                        <h6 class="text-uppercase text-muted small mb-3">
+                            <i class="bi bi-images me-2"></i>Product Images
+                        </h6>
+                        
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="{{ form.image_1.id_for_label }}" class="form-label fw-bold">
+                                    Primary Image <span class="text-danger">*</span>
+                                </label>
+                                {{ form.image_1 }}
+                                {% if form.image_1.errors %}
+                                    <div class="text-danger small mt-1">{{ form.image_1.errors.0 }}</div>
+                                {% endif %}
+                                <small class="form-text text-muted d-block">{{ form.image_1.help_text }}</small>
+                                {% if product and product.images.all.0 %}
+                                    <div class="mt-2">
+                                        <img src="{{ product.images.all.0.image.url }}" class="img-thumbnail" style="max-width: 150px; max-height: 150px;">
+                                        <small class="d-block text-muted">Current image</small>
+                                    </div>
+                                {% endif %}
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label for="{{ form.image_2.id_for_label }}" class="form-label fw-bold">
+                                    Additional Image 2
+                                </label>
+                                {{ form.image_2 }}
+                                {% if form.image_2.errors %}
+                                    <div class="text-danger small mt-1">{{ form.image_2.errors.0 }}</div>
+                                {% endif %}
+                                <small class="form-text text-muted d-block">{{ form.image_2.help_text }}</small>
+                                {% if product and product.images.all.1 %}
+                                    <div class="mt-2">
+                                        <img src="{{ product.images.all.1.image.url }}" class="img-thumbnail" style="max-width: 150px; max-height: 150px;">
+                                        <small class="d-block text-muted">Current image</small>
+                                    </div>
+                                {% endif %}
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label for="{{ form.image_3.id_for_label }}" class="form-label fw-bold">
+                                    Additional Image 3
+                                </label>
+                                {{ form.image_3 }}
+                                {% if form.image_3.errors %}
+                                    <div class="text-danger small mt-1">{{ form.image_3.errors.0 }}</div>
+                                {% endif %}
+                                <small class="form-text text-muted d-block">{{ form.image_3.help_text }}</small>
+                                {% if product and product.images.all.2 %}
+                                    <div class="mt-2">
+                                        <img src="{{ product.images.all.2.image.url }}" class="img-thumbnail" style="max-width: 150px; max-height: 150px;">
+                                        <small class="d-block text-muted">Current image</small>
+                                    </div>
+                                {% endif %}
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label for="{{ form.image_4.id_for_label }}" class="form-label fw-bold">
+                                    Additional Image 4
+                                </label>
+                                {{ form.image_4 }}
+                                {% if form.image_4.errors %}
+                                    <div class="text-danger small mt-1">{{ form.image_4.errors.0 }}</div>
+                                {% endif %}
+                                <small class="form-text text-muted d-block">{{ form.image_4.help_text }}</small>
+                                {% if product and product.images.all.3 %}
+                                    <div class="mt-2">
+                                        <img src="{{ product.images.all.3.image.url }}" class="img-thumbnail" style="max-width: 150px; max-height: 150px;">
+                                        <small class="d-block text-muted">Current image</small>
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        
+                        <div class="alert alert-info small mb-0">
+                            <i class="bi bi-info-circle me-2"></i>
+                            <strong>Tip:</strong> Upload high-quality images (recommended: 800x800px or larger). First image will be the primary display image.
+                        </div>
+                    </div>
+
+                    <!-- Status -->
+                    <div class="mb-4">
+                        <h6 class="text-uppercase text-muted small mb-3">
+                            <i class="bi bi-toggle-on me-2"></i>Status
+                        </h6>
+                        
+                        <div class="form-check form-switch">
+                            {{ form.is_active }}
+                            <label class="form-check-label" for="{{ form.is_active.id_for_label }}">
+                                This product is active and available for purchase
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Form Actions -->
+                    <div class="sticky-action-bar">
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end gap-md-2 pt-3 border-top">
+                            <a href="{% url 'admin_products' %}" class="btn btn-light">
+                                <i class="bi bi-x-circle me-2"></i>Cancel
+                            </a>
+                            <button type="submit" class="btn btn-primary btn-lg">
+                                <i class="bi bi-check-circle me-2"></i>Save Product
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Right Sidebar - Help/Info -->
+    <div class="col-12 col-lg-4">
+        <div class="card shadow-sm bg-light border-0 mb-3">
+            <div class="card-header bg-light border-bottom">
+                <h6 class="mb-0">
+                    <i class="bi bi-lightbulb me-2 text-warning"></i>Tips
+                </h6>
+            </div>
+            <div class="card-body small">
+                <h6 class="fw-bold mb-2">Customization Types:</h6>
+                <ul class="list-unstyled">
+                    <li class="mb-2">
+                        <span class="badge bg-info">Text Only</span><br>
+                        <small>Customers can add custom text only</small>
+                    </li>
+                    <li class="mb-2">
+                        <span class="badge bg-info">Photo Only</span><br>
+                        <small>Customers can upload custom images</small>
+                    </li>
+                    <li class="mb-2">
+                        <span class="badge bg-info">Text & Photo</span><br>
+                        <small>Customers can add both text and images</small>
+                    </li>
+                </ul>
+                
+                <hr>
+                
+                <h6 class="fw-bold mb-2 mt-3">Image Guidelines:</h6>
+                <ul class="small mb-0">
+                    <li>Use high-quality images (800x800px+)</li>
+                    <li>First image is the primary display</li>
+                    <li>Upload up to 4 images per product</li>
+                    <li>Supported formats: JPG, PNG, WebP</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+
+{% block extra_css %}
+<style>
+@media (max-width: 768px) {
+    .sticky-action-bar {
+        position: sticky;
+        bottom: 70px;
+        background: white;
+        padding: 1rem;
+        margin: -1rem -1rem 0;
+        box-shadow: 0 -4px 20px rgba(0,0,0,0.1);
+        z-index: 100;
+        border-radius: 16px 16px 0 0;
+    }
+    
+    .sticky-action-bar .btn {
+        font-size: 1rem;
+        padding: 0.875rem 1.25rem;
+    }
+}
+
+@media (min-width: 769px) {
+    .sticky-action-bar {
+        position: sticky;
+        bottom: 20px;
+        background: white;
+        padding: 1rem;
+        margin: 0 -1.5rem -1.5rem;
+        box-shadow: 0 -4px 20px rgba(0,0,0,0.08);
+        z-index: 100;
+        border-radius: 0 0 16px 16px;
+    }
+}
+
+.form-control:focus,
+.form-select:focus {
+    border-color: #667eea;
+    box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+}
+
+.img-thumbnail {
+    border: 2px solid #e9ecef;
+    border-radius: 8px;
+    padding: 0.25rem;
+}
+</style>
+{% endblock %}

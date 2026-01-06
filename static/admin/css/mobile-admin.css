@@ -1,0 +1,312 @@
+/* Mobile-friendly Django Admin CSS */
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+    /* Header adjustments */
+    #header {
+        padding: 10px 15px;
+    }
+    
+    #branding h1 {
+        font-size: 18px;
+        margin: 0;
+    }
+    
+    #user-tools {
+        font-size: 12px;
+        margin-top: 5px;
+    }
+    
+    /* Navigation */
+    .breadcrumbs {
+        padding: 8px 15px;
+        font-size: 12px;
+    }
+    
+    /* Content area */
+    .colM {
+        margin-left: 0 !important;
+    }
+    
+    #content {
+        padding: 10px 15px;
+    }
+    
+    /* Forms */
+    .form-row {
+        margin-bottom: 15px;
+    }
+    
+    .form-row label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
+    }
+    
+    .form-row input,
+    .form-row select,
+    .form-row textarea {
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box;
+    }
+    
+    /* Tables */
+    .results {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+    
+    .results table {
+        min-width: 600px;
+        font-size: 12px;
+    }
+    
+    .results th,
+    .results td {
+        padding: 8px 4px;
+        white-space: nowrap;
+    }
+    
+    /* Action buttons */
+    .actions {
+        padding: 10px 0;
+    }
+    
+    .actions select {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+    
+    .actions button {
+        width: 100%;
+        padding: 10px;
+        font-size: 14px;
+    }
+    
+    /* Fieldsets */
+    .module {
+        margin-bottom: 15px;
+    }
+    
+    .module h2 {
+        font-size: 14px;
+        padding: 8px 12px;
+    }
+    
+    /* Inline forms */
+    .inline-group {
+        overflow-x: auto;
+    }
+    
+    .inline-related {
+        margin-bottom: 15px;
+    }
+    
+    /* Buttons */
+    .default,
+    input[type="submit"],
+    .button {
+        padding: 8px 15px;
+        font-size: 13px;
+        margin: 5px 0;
+    }
+    
+    .object-tools {
+        margin-bottom: 15px;
+    }
+    
+    .object-tools li {
+        margin-bottom: 5px;
+    }
+    
+    .object-tools a {
+        padding: 8px 12px;
+        font-size: 12px;
+    }
+}
+
+/* Status badges */
+.status-badge {
+    display: inline-block;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.status-pending {
+    background-color: #ffc107;
+    color: #000;
+}
+
+.status-confirmed {
+    background-color: #17a2b8;
+    color: #fff;
+}
+
+.status-progress {
+    background-color: #007bff;
+    color: #fff;
+}
+
+.status-completed {
+    background-color: #28a745;
+    color: #fff;
+}
+
+.status-cancelled {
+    background-color: #dc3545;
+    color: #fff;
+}
+
+/* Payment status indicators */
+.payment-verified {
+    color: #28a745;
+    font-weight: bold;
+}
+
+.payment-pending {
+    color: #ffc107;
+    font-weight: bold;
+}
+
+.payment-missing {
+    color: #dc3545;
+    font-weight: bold;
+}
+
+/* Image previews */
+.image-preview {
+    max-width: 100px;
+    max-height: 100px;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+}
+
+/* Quick action buttons */
+.quick-actions {
+    display: flex;
+    gap: 5px;
+    flex-wrap: wrap;
+}
+
+.quick-actions .button {
+    font-size: 11px;
+    padding: 4px 8px;
+    margin: 0;
+}
+
+/* Order summary styling */
+.order-summary {
+    background-color: #f8f9fa;
+    padding: 10px;
+    border-radius: 4px;
+    font-size: 12px;
+    line-height: 1.4;
+}
+
+/* Responsive tables for mobile */
+@media (max-width: 480px) {
+    .results table,
+    .results thead,
+    .results tbody,
+    .results th,
+    .results td,
+    .results tr {
+        display: block;
+    }
+    
+    .results thead tr {
+        position: absolute;
+        top: -9999px;
+        left: -9999px;
+    }
+    
+    .results tr {
+        border: 1px solid #ccc;
+        margin-bottom: 10px;
+        padding: 10px;
+        border-radius: 4px;
+        background-color: #fff;
+    }
+    
+    .results td {
+        border: none;
+        position: relative;
+        padding-left: 50% !important;
+        white-space: normal;
+        text-align: left;
+    }
+    
+    .results td:before {
+        content: attr(data-label) ": ";
+        position: absolute;
+        left: 6px;
+        width: 45%;
+        padding-right: 10px;
+        white-space: nowrap;
+        font-weight: bold;
+        color: #333;
+    }
+}
+
+/* Enhanced mobile navigation */
+@media (max-width: 768px) {
+    #nav-sidebar {
+        position: fixed;
+        left: -250px;
+        top: 0;
+        width: 250px;
+        height: 100vh;
+        background: #417690;
+        transition: left 0.3s ease;
+        z-index: 1000;
+        overflow-y: auto;
+    }
+    
+    #nav-sidebar.show {
+        left: 0;
+    }
+    
+    .mobile-nav-toggle {
+        display: block;
+        background: none;
+        border: none;
+        color: #fff;
+        font-size: 18px;
+        padding: 10px;
+        cursor: pointer;
+    }
+    
+    .nav-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.5);
+        z-index: 999;
+        display: none;
+    }
+    
+    .nav-overlay.show {
+        display: block;
+    }
+}
+
+/* Print styles for orders */
+@media print {
+    .object-tools,
+    .breadcrumbs,
+    #header,
+    .submit-row {
+        display: none !important;
+    }
+    
+    .order-summary {
+        background: none !important;
+        border: 1px solid #000;
+    }
+}

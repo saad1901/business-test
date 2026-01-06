@@ -1,0 +1,125 @@
+{% extends 'admin-portal/base.html' %}
+{% load static %}
+
+{% block title %}Banners - Admin Portal{% endblock %}
+
+{% block content %}
+
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="d-flex justify-content-between align-items-center">
+            <h2 class="mb-0">
+                <i class="bi bi-image me-2 text-primary"></i>Banners Management
+            </h2>
+            <a href="{% url 'admin_banner_add' %}" class="btn btn-success">
+                <i class="bi bi-plus-circle me-2"></i>Add New Banner
+            </a>
+        </div>
+    </div>
+</div>
+
+{% if banners %}
+    <!-- Banner List -->
+    <div class="row">
+        {% for banner in banners %}
+            <div class="col-12 mb-4">
+                <div class="card shadow-sm hover-shadow">
+                    <div class="row g-0">
+                        <!-- Banner Image -->
+                        <div class="col-md-4">
+                            {% if banner.image %}
+                                <img src="{{ banner.image.url }}" class="img-fluid rounded-start" alt="{{ banner.title }}" style="height: 250px; width: 100%; object-fit: cover;">
+                            {% else %}
+                                <div class="bg-light d-flex align-items-center justify-content-center rounded-start" style="height: 250px;">
+                                    <i class="bi bi-image text-muted fs-1"></i>
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <!-- Banner Info -->
+                        <div class="col-md-8">
+                            <div class="card-body h-100 d-flex flex-column">
+                                <div class="mb-3">
+                                    <div class="d-flex justify-content-between align-items-start mb-2">
+                                        <div>
+                                            <h5 class="card-title mb-1">{{ banner.title }}</h5>
+                                            <p class="card-text text-muted mb-2">{{ banner.subtitle|truncatewords:20 }}</p>
+                                        </div>
+                                        <span class="badge 
+                                            {% if banner.banner_type == 'hero' %}bg-primary
+                                            {% elif banner.banner_type == 'promotion' %}bg-warning text-dark
+                                            {% else %}bg-info
+                                            {% endif %}">
+                                            {{ banner.get_banner_type_display }}
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <div class="row text-center mb-3">
+                                    <div class="col-6">
+                                        <small class="text-muted d-block">Type</small>
+                                        <strong>{{ banner.get_banner_type_display }}</strong>
+                                    </div>
+                                    <div class="col-6">
+                                        <small class="text-muted d-block">Created</small>
+                                        <strong>{{ banner.created_at|date:"M d, Y" }}</strong>
+                                    </div>
+                                </div>
+
+                                <div class="d-grid gap-2 d-md-flex mt-auto">
+                                    <a href="{% url 'admin_banner_edit' banner.id %}" class="btn btn-sm btn-outline-primary">
+                                        <i class="bi bi-pencil-square me-2"></i>Edit
+                                    </a>
+                                    <button type="button" class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteModal{{ banner.id }}">
+                                        <i class="bi bi-trash me-2"></i>Delete
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Delete Modal -->
+            <div class="modal fade" id="deleteModal{{ banner.id }}" tabindex="-1">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Confirm Delete</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+                        <div class="modal-body">
+                            <p>Are you sure you want to delete the banner <strong>"{{ banner.title }}"</strong>?</p>
+                            <p class="text-muted small">This action cannot be undone.</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                            <form method="post" action="{% url 'admin_banner_delete' banner.id %}" style="display: inline;">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-danger">Delete Banner</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+{% else %}
+    <div class="col-12">
+        <div class="alert alert-info text-center py-5">
+            <i class="bi bi-inbox fs-1 d-block mb-3 text-muted"></i>
+            <h5>No Banners Found</h5>
+            <p class="mb-0">Start by adding your first banner.</p>
+        </div>
+    </div>
+{% endif %}
+
+<style>
+    .hover-shadow:hover {
+        box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+        transition: box-shadow 0.3s ease;
+    }
+</style>
+
+{% endblock %}

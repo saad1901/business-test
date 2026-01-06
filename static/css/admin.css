@@ -1,0 +1,509 @@
+/* Light Mobile-First Admin Portal Styles */
+
+/* Base styles */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 14px;
+    background-color: #f8f9fa !important;
+}
+
+/* Navigation */
+.navbar-brand {
+    font-weight: 700;
+    font-size: 1.25rem;
+}
+
+.navbar-light .navbar-nav .nav-link {
+    color: #495057;
+    font-weight: 500;
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    margin: 0 0.25rem;
+    transition: all 0.3s ease;
+}
+
+.navbar-light .navbar-nav .nav-link:hover {
+    color: #667eea;
+    background-color: rgba(102, 126, 234, 0.1);
+}
+
+.navbar-light .navbar-nav .nav-link.active {
+    color: #667eea;
+    background-color: rgba(102, 126, 234, 0.15);
+    font-weight: 600;
+}
+
+/* Cards */
+.card {
+    border: none;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    margin-bottom: 1.5rem;
+    background: #ffffff;
+}
+
+.card-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    border-radius: 16px 16px 0 0 !important;
+    padding: 1.25rem 1.5rem;
+    font-weight: 600;
+}
+
+.card-body {
+    padding: 1.5rem;
+}
+
+/* Buttons */
+.btn {
+    border-radius: 12px;
+    font-weight: 500;
+    padding: 0.625rem 1.25rem;
+    transition: all 0.3s ease;
+    border: none;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+}
+
+.btn-primary:hover {
+    background: linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%);
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.3);
+}
+
+.btn-success {
+    background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+}
+
+.btn-warning {
+    background: linear-gradient(135deg, #ffc107 0%, #fd7e14 100%);
+    color: #000;
+}
+
+.btn-info {
+    background: linear-gradient(135deg, #17a2b8 0%, #6f42c1 100%);
+}
+
+.btn-danger {
+    background: linear-gradient(135deg, #dc3545 0%, #e83e8c 100%);
+}
+
+.btn-outline-primary {
+    border: 2px solid #667eea;
+    color: #667eea;
+    background: transparent;
+}
+
+.btn-outline-primary:hover {
+    background: #667eea;
+    color: white;
+    transform: translateY(-1px);
+}
+
+/* Forms */
+.form-control,
+.form-select {
+    border: 2px solid #e9ecef;
+    border-radius: 12px;
+    padding: 0.75rem 1rem;
+    font-size: 16px; /* Prevents zoom on iOS */
+    transition: all 0.3s ease;
+    background-color: #ffffff;
+}
+
+.form-control:focus,
+.form-select:focus {
+    border-color: #667eea;
+    box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+    background-color: #ffffff;
+}
+
+.form-label {
+    font-weight: 600;
+    color: #495057;
+    margin-bottom: 0.5rem;
+}
+
+.form-check-input:checked {
+    background-color: #667eea;
+    border-color: #667eea;
+}
+
+/* Tables */
+.table {
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+.table th {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    border: none;
+    font-weight: 600;
+    color: #495057;
+    padding: 1rem 0.75rem;
+}
+
+.table td {
+    border: none;
+    padding: 1rem 0.75rem;
+    vertical-align: middle;
+    border-bottom: 1px solid #f8f9fa;
+}
+
+.table tbody tr:hover {
+    background-color: rgba(102, 126, 234, 0.05);
+}
+
+/* Status badges */
+.badge {
+    font-size: 0.75rem;
+    padding: 0.5em 0.75em;
+    border-radius: 8px;
+    font-weight: 500;
+}
+
+/* Stats cards */
+.card.bg-primary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+    border: none;
+    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+}
+
+.card.bg-success {
+    background: linear-gradient(135deg, #28a745 0%, #20c997 100%) !important;
+    border: none;
+    box-shadow: 0 8px 25px rgba(40, 167, 69, 0.3);
+}
+
+.card.bg-warning {
+    background: linear-gradient(135deg, #ffc107 0%, #fd7e14 100%) !important;
+    border: none;
+    box-shadow: 0 8px 25px rgba(255, 193, 7, 0.3);
+}
+
+.card.bg-info {
+    background: linear-gradient(135deg, #17a2b8 0%, #6f42c1 100%) !important;
+    border: none;
+    box-shadow: 0 8px 25px rgba(23, 162, 184, 0.3);
+}
+
+/* Alerts */
+.alert {
+    border: none;
+    border-radius: 12px;
+    padding: 1rem 1.25rem;
+    border-left: 4px solid;
+}
+
+.alert-success {
+    background: linear-gradient(135deg, rgba(40, 167, 69, 0.1) 0%, rgba(32, 201, 151, 0.1) 100%);
+    border-left-color: #28a745;
+    color: #155724;
+}
+
+.alert-info {
+    background: linear-gradient(135deg, rgba(23, 162, 184, 0.1) 0%, rgba(111, 66, 193, 0.1) 100%);
+    border-left-color: #17a2b8;
+    color: #0c5460;
+}
+
+.alert-warning {
+    background: linear-gradient(135deg, rgba(255, 193, 7, 0.1) 0%, rgba(253, 126, 20, 0.1) 100%);
+    border-left-color: #ffc107;
+    color: #856404;
+}
+
+.alert-danger {
+    background: linear-gradient(135deg, rgba(220, 53, 69, 0.1) 0%, rgba(232, 62, 140, 0.1) 100%);
+    border-left-color: #dc3545;
+    color: #721c24;
+}
+
+/* Mobile optimizations */
+@media (max-width: 768px) {
+    body {
+        font-size: 14px;
+        padding-bottom: 80px; /* Space for bottom nav */
+    }
+    
+    .container-fluid {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+    
+    .card {
+        margin-bottom: 1rem;
+        border-radius: 12px;
+    }
+    
+    .card-header {
+        padding: 1rem;
+        font-size: 1rem;
+    }
+    
+    .card-body {
+        padding: 1rem;
+    }
+    
+    .btn {
+        font-size: 14px;
+        padding: 0.75rem 1rem;
+        min-height: 44px; /* Touch-friendly */
+    }
+    
+    .btn-sm {
+        font-size: 12px;
+        padding: 0.5rem 0.75rem;
+        min-height: 38px;
+    }
+    
+    /* Mobile table cards */
+    .mobile-card {
+        background: white;
+        border-radius: 12px;
+        padding: 1rem;
+        margin-bottom: 1rem;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+        border-left: 4px solid #667eea;
+    }
+    
+    /* Form improvements */
+    .form-control,
+    .form-select {
+        font-size: 16px;
+        padding: 0.875rem 1rem;
+        min-height: 50px;
+    }
+    
+    .form-label {
+        font-size: 14px;
+        font-weight: 600;
+    }
+    
+    /* Navigation improvements */
+    .navbar-collapse {
+        background: white;
+        margin: 0 -1rem;
+        padding: 1rem;
+        border-radius: 0 0 16px 16px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    }
+    
+    .navbar-nav .nav-link {
+        padding: 0.875rem 1rem;
+        margin: 0.25rem 0;
+        border-radius: 8px;
+        font-size: 15px;
+    }
+    
+    /* Bottom navigation */
+    .fixed-bottom {
+        box-shadow: 0 -4px 20px rgba(0,0,0,0.1);
+        border-top: 1px solid #e9ecef;
+    }
+    
+    .fixed-bottom .nav-link {
+        padding: 0.75rem 0.5rem;
+        font-size: 11px;
+        line-height: 1.2;
+    }
+    
+    .fixed-bottom .nav-link i {
+        font-size: 1.25rem;
+        margin-bottom: 0.25rem;
+    }
+    
+    /* Hide desktop table, show mobile cards */
+    .d-none.d-md-block {
+        display: none !important;
+    }
+    
+    .d-block.d-md-none {
+        display: block !important;
+    }
+}
+
+/* Touch-friendly improvements */
+@media (max-width: 768px) and (pointer: coarse) {
+    .btn {
+        min-height: 48px;
+        padding: 0.875rem 1.25rem;
+    }
+    
+    .btn-sm {
+        min-height: 42px;
+        padding: 0.625rem 1rem;
+    }
+    
+    .form-control,
+    .form-select {
+        min-height: 52px;
+        padding: 1rem;
+    }
+    
+    .table td,
+    .table th {
+        padding: 1rem 0.75rem;
+    }
+    
+    /* Larger touch targets */
+    .nav-link {
+        min-height: 48px;
+        display: flex;
+        align-items: center;
+    }
+}
+
+/* Loading states */
+.loading {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+.spinner-border-sm {
+    width: 1rem;
+    height: 1rem;
+}
+
+/* Image previews */
+.img-thumbnail {
+    border-radius: 12px;
+    border: 2px solid #e9ecef;
+    padding: 0.25rem;
+}
+
+/* Pagination */
+.pagination {
+    margin-bottom: 0;
+}
+
+.page-link {
+    border-radius: 8px;
+    margin: 0 2px;
+    border: 2px solid #e9ecef;
+    color: #667eea;
+    padding: 0.75rem 1rem;
+}
+
+.page-item.active .page-link {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-color: #667eea;
+}
+
+.page-link:hover {
+    background-color: rgba(102, 126, 234, 0.1);
+    border-color: #667eea;
+    color: #667eea;
+}
+
+/* Timeline styles */
+.timeline {
+    position: relative;
+    padding-left: 30px;
+}
+
+.timeline-item {
+    position: relative;
+    padding-bottom: 20px;
+    color: #6c757d;
+}
+
+.timeline-item.active {
+    color: #667eea;
+    font-weight: 600;
+}
+
+.timeline-item i {
+    position: absolute;
+    left: -30px;
+    top: 0;
+    font-size: 1.2rem;
+}
+
+.timeline-item:not(:last-child)::before {
+    content: '';
+    position: absolute;
+    left: -24px;
+    top: 20px;
+    width: 2px;
+    height: 20px;
+    background-color: #dee2e6;
+}
+
+.timeline-item.active:not(:last-child)::before {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+/* Print styles */
+@media print {
+    .navbar,
+    .btn,
+    .fixed-bottom,
+    .pagination,
+    .alert {
+        display: none !important;
+    }
+    
+    .card {
+        box-shadow: none !important;
+        border: 1px solid #000 !important;
+    }
+    
+    .container-fluid {
+        max-width: none !important;
+        padding: 0 !important;
+    }
+    
+    body {
+        background: white !important;
+        padding-bottom: 0 !important;
+    }
+}
+
+/* Smooth animations */
+.card,
+.btn,
+.form-control,
+.alert {
+    transition: all 0.3s ease;
+}
+
+/* Hover effects */
+.card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+}
+
+/* Focus styles for accessibility */
+.btn:focus,
+.form-control:focus,
+.form-select:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.25);
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%);
+}

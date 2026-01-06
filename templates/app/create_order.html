@@ -1,0 +1,356 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Customize {{ product.name }} - Leena's Craft{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <nav aria-label="breadcrumb" class="mb-4">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'product_list' %}">Products</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'product_detail' product.pk %}">{{ product.name }}</a></li>
+            <li class="breadcrumb-item active">Customize Order</li>
+        </ol>
+    </nav>
+    
+    <div class="row g-5">
+        <!-- Product Summary -->
+        <div class="col-lg-4">
+            <div class="card shadow-sm sticky-top" style="top: 100px;">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">
+                        <i class="bi bi-bag me-2"></i>Order Summary
+                    </h5>
+                </div>
+                <div class="card-body">
+                    {% if product.images.exists %}
+                        <img src="{{ product.images.first.image.url }}" class="img-fluid rounded mb-3" alt="{{ product.name }}">
+                    {% endif %}
+                    
+                    <h6 class="fw-bold">{{ product.name }}</h6>
+                    <p class="text-muted small">{{ product.description|truncatewords:15 }}</p>
+                    
+                    <div class="mb-3">
+                        <span class="badge bg-secondary">{{ product.get_customization_type_display }}</span>
+                    </div>
+                    
+                    <hr>
+                    
+                    <div class="d-flex justify-content-between mb-2">
+                        <span>Unit Price:</span>
+                        <span class="fw-bold">₹<span id="unit-price">{{ product.base_price }}</span></span>
+                    </div>
+                    
+                    <div class="d-flex justify-content-between mb-2">
+                        <span>Quantity:</span>
+                        <span class="fw-bold" id="quantity-display">1</span>
+                    </div>
+                    
+                    <hr>
+                    
+                    <div class="d-flex justify-content-between">
+                        <span class="h6">Total:</span>
+                        <span class="h5 text-primary" id="total-price">₹{{ product.base_price }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Order Form -->
+        <div class="col-lg-8">
+            <form method="post" enctype="multipart/form-data" id="order-form">
+                {% csrf_token %}
+                
+                <!-- Customization Section -->
+                <div class="card shadow-sm mb-4">
+                    <div class="card-header">
+                        <h5 class="mb-0">
+                            <i class="bi bi-palette me-2"></i>Customize Your Product
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row g-3">
+                            {% if product.customization_type == 'text' or product.customization_type == 'both' %}
+                                <div class="col-12">
+                                    <label for="{{ customization_form.custom_text.id_for_label }}" class="form-label">
+                                        <i class="bi bi-type me-1"></i>Custom Text
+                                        {% if product.customization_type == 'text' %}<span class="text-danger">*</span>{% endif %}
+                                    </label>
+                                    {{ customization_form.custom_text }}
+                                    <div class="form-text">Enter the text you want on your resin art (e.g., name, quote, message)</div>
+                                </div>
+                            {% endif %}
+                            
+                            {% if product.customization_type == 'photo' or product.customization_type == 'both' %}
+                                <div class="col-12">
+                                    <label for="{{ customization_form.custom_image.id_for_label }}" class="form-label">
+                                        <i class="bi bi-image me-1"></i>Upload Photo
+                                        {% if product.customization_type == 'photo' %}<span class="text-danger">*</span>{% endif %}
+                                    </label>
+                                    {{ customization_form.custom_image }}
+                                    <div class="form-text">Upload a high-quality image (JPG, PNG). Best results with square images.</div>
+                                </div>
+                            {% endif %}
+                            
+                            <div class="col-md-6">
+                                <label for="{{ customization_form.quantity.id_for_label }}" class="form-label">
+                                    <i class="bi bi-123 me-1"></i>Quantity <span class="text-danger">*</span>
+                                </label>
+                                {{ customization_form.quantity }}
+                            </div>
+                            
+                            <div class="col-12">
+                                <label for="{{ customization_form.notes.id_for_label }}" class="form-label">
+                                    <i class="bi bi-chat-text me-1"></i>Special Instructions (Optional)
+                                </label>
+                                {{ customization_form.notes }}
+                                <div class="form-text">Any special requests or additional details</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Customer Details Section -->
+                <div class="card shadow-sm mb-4">
+                    <div class="card-header">
+                        <h5 class="mb-0">
+                            <i class="bi bi-person me-2"></i>Your Details
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label for="{{ order_form.full_name.id_for_label }}" class="form-label">
+                                    Full Name <span class="text-danger">*</span>
+                                </label>
+                                {{ order_form.full_name }}
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <label for="{{ order_form.mobile_number.id_for_label }}" class="form-label">
+                                    Mobile Number <span class="text-danger">*</span>
+                                </label>
+                                {{ order_form.mobile_number }}
+                            </div>
+                            
+                            <div class="col-12">
+                                <label for="{{ order_form.email.id_for_label }}" class="form-label">
+                                    Email Address
+                                </label>
+                                {{ order_form.email }}
+                                <div class="form-text">Optional - for order updates</div>
+                            </div>
+                            
+                            <div class="col-12">
+                                <label for="{{ order_form.delivery_address.id_for_label }}" class="form-label">
+                                    Delivery Address <span class="text-danger">*</span>
+                                </label>
+                                {{ order_form.delivery_address }}
+                                <div class="form-text">Complete address with pincode</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Payment Details Section -->
+                {% if website_settings.upi_id or website_settings.payment_qr_code %}
+                <div class="card shadow-sm mb-4">
+                    <div class="card-header bg-success text-white">
+                        <h5 class="mb-0">
+                            <i class="bi bi-wallet2 me-2"></i>Payment Information
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="alert alert-info mb-3">
+                            <i class="bi bi-info-circle me-2"></i>
+                            <strong>Important:</strong> The QR code shows <strong>₹{{ product.base_price }}</strong> per item. 
+                            If ordering multiple items, please pay the total amount accordingly.
+                        </div>
+                        
+                        <div class="row align-items-center">
+                            {% if website_settings.upi_id %}
+                            <div class="col-md-6 text-center mb-3 mb-md-0">
+                                <h6 class="mb-3">Scan to Pay (₹{{ product.base_price }} per item)</h6>
+                                <img src="{% url 'upi_qr' %}?amount={{ product.base_price }}" alt="Payment QR Code" style="max-width: 250px; max-height: 250px; border-radius: 8px; border: 2px solid #dee2e6;">
+                                <small class="d-block text-muted mt-2">QR shows price for 1 item</small>
+                            </div>
+                            {% elif website_settings.payment_qr_code %}
+                            <div class="col-md-6 text-center mb-3 mb-md-0">
+                                <h6 class="mb-3">Scan to Pay</h6>
+                                <img src="{{ website_settings.payment_qr_code.url }}" alt="Payment QR Code" style="max-width: 250px; max-height: 250px; border-radius: 8px; border: 2px solid #dee2e6;">
+                                <small class="d-block text-muted mt-2">Pay ₹{{ product.base_price }} per item</small>
+                            </div>
+                            {% endif %}
+                            
+                            <div class="col-md-6">
+                                <h6 class="mb-3">Payment Details</h6>
+                                {% if website_settings.upi_id %}
+                                <div class="alert alert-info mb-3 alert-permanent">
+                                    <strong>UPI ID:</strong><br>
+                                    <span class="font-monospace fw-bold">{{ website_settings.upi_id }}</span>
+                                </div>
+                                {% endif %}
+                                
+                                <div class="alert alert-success mb-3 alert-permanent">
+                                    <strong>Amount per item:</strong><br>
+                                    <span class="h4 mb-0">₹{{ product.base_price }}</span>
+                                </div>
+                                
+                                <div class="alert alert-warning alert-permanent">
+                                    <i class="bi bi-info-circle me-2"></i>
+                                    <small>The QR code shows the price for <strong>1 item (₹{{ product.base_price }})</strong>. If ordering multiple items, please pay the total amount and upload payment proof in the next step.</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+                
+                <!-- Payment Proof Section -->
+                <div class="card shadow-sm mb-4">
+                    <div class="card-header bg-warning text-dark">
+                        <h5 class="mb-0">
+                            <i class="bi bi-receipt me-2"></i>Payment Proof <span class="text-danger">*</span>
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <label for="{{ payment_form.screenshot.id_for_label }}" class="form-label">
+                                <i class="bi bi-image me-1"></i>Payment Screenshot
+                            </label>
+                            {{ payment_form.screenshot }}
+                            <div class="form-text">Upload a screenshot of your payment confirmation (required for order verification)</div>
+                            {% if payment_form.screenshot.errors %}
+                                <div class="text-danger small">{{ payment_form.screenshot.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="{{ payment_form.upi_transaction_id.id_for_label }}" class="form-label">
+                                <i class="bi bi-hash me-1"></i>UPI Transaction ID (Optional)
+                            </label>
+                            {{ payment_form.upi_transaction_id }}
+                            <div class="form-text">Transaction ID from your payment confirmation (helps with verification)</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Submit Button -->
+                <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                    <a href="{% url 'product_detail' product.pk %}" class="btn btn-outline-secondary btn-lg">
+                        <i class="bi bi-arrow-left me-2"></i>Back
+                    </a>
+                    <button type="submit" id="submitOrderBtn" class="btn btn-primary btn-lg">
+                        <i class="bi bi-check-circle me-2"></i>Complete Order
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const quantityInput = document.getElementById('{{ customization_form.quantity.id_for_label }}');
+    const unitPrice = {{ product.base_price }};
+    const orderForm = document.querySelector('form');
+    const submitBtn = document.getElementById('submitOrderBtn');
+    
+    // Prevent double submission
+    let isSubmitting = false;
+    
+    orderForm.addEventListener('submit', function(e) {
+        if (isSubmitting) {
+            e.preventDefault();
+            return false;
+        }
+        
+        isSubmitting = true;
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Processing...';
+        
+        // Re-enable after 10 seconds as fallback
+        setTimeout(function() {
+            isSubmitting = false;
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = '<i class="bi bi-check-circle me-2"></i>Complete Order';
+        }, 10000);
+    });
+    
+    function updatePrice() {
+        const quantity = parseInt(quantityInput.value) || 1;
+        const total = unitPrice * quantity;
+        
+        document.getElementById('quantity-display').textContent = quantity;
+        document.getElementById('total-price').textContent = '₹' + total.toFixed(2);
+    }
+    
+    quantityInput.addEventListener('input', updatePrice);
+    quantityInput.addEventListener('change', updatePrice);
+    
+    // Form validation
+    document.getElementById('order-form').addEventListener('submit', function(e) {
+        const customText = document.getElementById('{{ customization_form.custom_text.id_for_label }}');
+        const customImage = document.getElementById('{{ customization_form.custom_image.id_for_label }}');
+        
+        {% if product.customization_type == 'text' %}
+            if (!customText.value.trim()) {
+                e.preventDefault();
+                alert('Please enter custom text for your resin art.');
+                customText.focus();
+                return;
+            }
+        {% elif product.customization_type == 'photo' %}
+            if (!customImage.files.length) {
+                e.preventDefault();
+                alert('Please upload a photo for your resin art.');
+                customImage.focus();
+                return;
+            }
+        {% elif product.customization_type == 'both' %}
+            if (!customText.value.trim() && !customImage.files.length) {
+                e.preventDefault();
+                alert('Please provide either custom text or upload a photo (or both).');
+                return;
+            }
+        {% endif %}
+    });
+
+    // Mobile number input: allow only digits and max 10 chars
+    const mobileInput = document.getElementById('{{ order_form.mobile_number.id_for_label }}');
+    if (mobileInput) {
+        // Sanitize on input: remove non-digits and truncate to 10
+        mobileInput.addEventListener('input', function(e) {
+            let v = e.target.value.replace(/\D/g, '');
+            if (v.length > 10) v = v.slice(0, 10);
+            e.target.value = v;
+        });
+
+        // Prevent typing beyond 10 digits and non-numeric characters
+        mobileInput.addEventListener('keydown', function(e) {
+            const key = e.key;
+            const allowedKeys = ['Backspace', 'Tab', 'ArrowLeft', 'ArrowRight', 'Delete', 'Home', 'End'];
+            if (allowedKeys.includes(key) || e.ctrlKey || e.metaKey) return;
+            if (key >= '0' && key <= '9') {
+                if (mobileInput.value.replace(/\D/g, '').length >= 10) {
+                    e.preventDefault();
+                }
+                return;
+            }
+            // Prevent other keys
+            e.preventDefault();
+        });
+
+        // Handle paste: only allow digits and up to 10 chars
+        mobileInput.addEventListener('paste', function(e) {
+            e.preventDefault();
+            const paste = (e.clipboardData || window.clipboardData).getData('text').replace(/\D/g, '').slice(0, 10);
+            document.execCommand('insertText', false, paste);
+        });
+    }
+});
+</script>
+{% endblock %}

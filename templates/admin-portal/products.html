@@ -1,0 +1,173 @@
+{% extends 'admin-portal/base.html' %}
+{% load static %}
+
+{% block title %}Products - Admin Portal{% endblock %}
+
+{% block content %}
+
+<div class="row mb-3 mb-md-4">
+    <div class="col-12">
+        <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+            <h2 class="mb-0 h4 h-md-2">
+                <i class="bi bi-box me-2 text-primary"></i>Products
+            </h2>
+            <a href="{% url 'admin_product_add' %}" class="btn btn-success btn-sm btn-md-md">
+                <i class="bi bi-plus-circle me-1"></i><span class="d-none d-sm-inline">Add New</span><span class="d-sm-none">Add</span>
+            </a>
+        </div>
+    </div>
+</div>
+
+{% if page_obj %}
+    <div class="row g-3">
+        {% for product in page_obj %}
+            <div class="col-12 col-sm-6 col-lg-4 col-xl-3">
+                <div class="card h-100 shadow-sm hover-lift">
+                    <!-- Product Image -->
+                    <div class="position-relative product-image-wrapper">
+                        {% if product.images.all %}
+                            <img src="{{ product.images.first.image.url }}" class="card-img-top" alt="{{ product.name }}" style="height: 180px; object-fit: cover;">
+                        {% else %}
+                            <div class="card-img-top bg-light d-flex align-items-center justify-content-center" style="height: 180px;">
+                                <i class="bi bi-image text-muted fs-1"></i>
+                            </div>
+                        {% endif %}
+                        
+                        <!-- Status Badge -->
+                        <div class="position-absolute top-0 end-0 m-2">
+                            {% if product.is_active %}
+                                <span class="badge bg-success shadow-sm">
+                                    <i class="bi bi-check-circle me-1"></i>Active
+                                </span>
+                            {% else %}
+                                <span class="badge bg-danger shadow-sm">
+                                    <i class="bi bi-x-circle me-1"></i>Inactive
+                                </span>
+                            {% endif %}
+                        </div>
+                        
+                        <!-- Image Count Badge -->
+                        {% if product.images.count > 1 %}
+                            <div class="position-absolute bottom-0 start-0 m-2">
+                                <span class="badge bg-dark bg-opacity-75">
+                                    <i class="bi bi-images me-1"></i>{{ product.images.count }}
+                                </span>
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="card-body p-3">
+                        <h6 class="card-title mb-2 fw-bold text-truncate" title="{{ product.name }}">{{ product.name }}</h6>
+                        <p class="card-text text-muted small mb-3" style="font-size: 0.8rem; line-height: 1.4;">{{ product.description|truncatewords:12 }}</p>
+                        
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <div>
+                                <small class="text-muted d-block" style="font-size: 0.7rem;">Price</small>
+                                <strong class="text-success fs-6">₹{{ product.base_price }}</strong>
+                            </div>
+                            <div class="text-end">
+                                <small class="text-muted d-block" style="font-size: 0.7rem;">Type</small>
+                                <span class="badge bg-info" style="font-size: 0.7rem;">{{ product.get_customization_type_display|truncatewords:2 }}</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card-footer bg-transparent border-top p-2">
+                        <a href="{% url 'admin_product_edit' product.id %}" class="btn btn-sm btn-outline-primary w-100">
+                            <i class="bi bi-pencil-square me-1"></i>Edit Product
+                        </a>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+    <!-- Pagination -->
+    {% if page_obj.has_other_pages %}
+        <nav aria-label="Page navigation" class="mt-5">
+            <ul class="pagination justify-content-center">
+                {% if page_obj.has_previous %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page=1">First</a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+                    </li>
+                {% endif %}
+
+                {% for num in page_obj.paginator.page_range %}
+                    {% if page_obj.number == num %}
+                        <li class="page-item active">
+                            <span class="page-link">{{ num }}</span>
+                        </li>
+                    {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                        </li>
+                    {% endif %}
+                {% endfor %}
+
+                {% if page_obj.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">Last</a>
+                    </li>
+                {% endif %}
+            </ul>
+        </nav>
+    {% endif %}
+
+{% else %}
+    <div class="col-12">
+        <div class="card text-center py-5 border-0 shadow-sm">
+            <div class="card-body">
+                <i class="bi bi-inbox text-muted mb-3" style="font-size: 4rem; opacity: 0.5;"></i>
+                <h5 class="text-muted">No Products Found</h5>
+                <p class="text-muted mb-4">Start by adding your first product</p>
+                <a href="{% url 'admin_product_add' %}" class="btn btn-primary">
+                    <i class="bi bi-plus-circle me-2"></i>Add Product
+                </a>
+            </div>
+        </div>
+    </div>
+{% endif %}
+
+{% endblock %}
+
+{% block extra_css %}
+<style>
+.hover-lift {
+    transition: all 0.3s ease;
+}
+
+.hover-lift:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 35px rgba(0,0,0,0.15) !important;
+}
+
+.product-image-wrapper {
+    overflow: hidden;
+    border-radius: 16px 16px 0 0;
+}
+
+.product-image-wrapper img {
+    transition: transform 0.3s ease;
+}
+
+.hover-lift:hover .product-image-wrapper img {
+    transform: scale(1.05);
+}
+
+@media (max-width: 576px) {
+    .card-body {
+        padding: 0.875rem !important;
+    }
+    
+    .card-title {
+        font-size: 0.95rem;
+    }
+}
+</style>
+{% endblock %}

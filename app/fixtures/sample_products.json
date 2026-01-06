@@ -1,0 +1,80 @@
+[
+  {
+    "model": "app.product",
+    "pk": 1,
+    "fields": {
+      "name": "Custom Name Keychain",
+      "description": "Beautiful resin keychain with your custom name or text. Perfect for personal use or as a gift. Each piece is handcrafted with high-quality resin and comes with a sturdy keyring.",
+      "base_price": "299.00",
+      "customization_type": "text",
+      "is_active": true,
+      "created_at": "2024-01-01T00:00:00Z",
+      "updated_at": "2024-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "app.product",
+    "pk": 2,
+    "fields": {
+      "name": "Photo Resin Keychain",
+      "description": "Preserve your precious memories in a beautiful resin keychain. Upload your favorite photo and we'll create a stunning keepsake that you can carry everywhere.",
+      "base_price": "399.00",
+      "customization_type": "photo",
+      "is_active": true,
+      "created_at": "2024-01-01T00:00:00Z",
+      "updated_at": "2024-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "app.product",
+    "pk": 3,
+    "fields": {
+      "name": "Premium Photo + Text Keychain",
+      "description": "The ultimate personalized keychain combining your favorite photo with custom text. Perfect for couples, families, or special occasions. Premium quality resin with crystal-clear finish.",
+      "base_price": "499.00",
+      "customization_type": "both",
+      "is_active": true,
+      "created_at": "2024-01-01T00:00:00Z",
+      "updated_at": "2024-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "app.product",
+    "pk": 4,
+    "fields": {
+      "name": "Quote Resin Bookmark",
+      "description": "Elegant resin bookmark with your favorite quote or motivational text. Perfect for book lovers and students. Durable and beautiful design that won't damage your books.",
+      "base_price": "249.00",
+      "customization_type": "text",
+      "is_active": true,
+      "created_at": "2024-01-01T00:00:00Z",
+      "updated_at": "2024-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "app.product",
+    "pk": 5,
+    "fields": {
+      "name": "Memory Photo Frame",
+      "description": "Small resin photo frame perfect for desk or shelf display. Upload your favorite photo and we'll create a beautiful mini frame that captures your special moments.",
+      "base_price": "599.00",
+      "customization_type": "photo",
+      "is_active": true,
+      "created_at": "2024-01-01T00:00:00Z",
+      "updated_at": "2024-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "app.product",
+    "pk": 6,
+    "fields": {
+      "name": "Custom Resin Magnet Set",
+      "description": "Set of 3 custom resin magnets with your photos and text. Perfect for refrigerator decoration or office use. Strong magnets with beautiful resin finish.",
+      "base_price": "449.00",
+      "customization_type": "both",
+      "is_active": true,
+      "created_at": "2024-01-01T00:00:00Z",
+      "updated_at": "2024-01-01T00:00:00Z"
+    }
+  }
+]

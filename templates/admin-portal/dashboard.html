@@ -1,0 +1,274 @@
+{% extends 'admin-portal/base.html' %}
+{% load static %}
+
+{% block title %}Dashboard - Admin Portal{% endblock %}
+
+{% block content %}
+
+<!-- Stats Cards -->
+<div class="row g-3 mb-4">
+    <div class="col-6 col-lg-3">
+        <div class="card bg-primary text-white h-100">
+            <div class="card-body text-center p-3">
+                <i class="bi bi-bag-fill fs-1 mb-2 opacity-75"></i>
+                <h3 class="mb-1 fw-bold">{{ total_orders }}</h3>
+                <small class="opacity-75">Total Orders</small>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-6 col-lg-3">
+        <div class="card bg-warning text-dark h-100">
+            <div class="card-body text-center p-3">
+                <i class="bi bi-clock-fill fs-1 mb-2 opacity-75"></i>
+                <h3 class="mb-1 fw-bold">{{ pending_orders }}</h3>
+                <small class="opacity-75">Pending Payment</small>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-6 col-lg-3">
+        <div class="card bg-info text-white h-100">
+            <div class="card-body text-center p-3">
+                <i class="bi bi-check-circle-fill fs-1 mb-2 opacity-75"></i>
+                <h3 class="mb-1 fw-bold">{{ confirmed_orders }}</h3>
+                <small class="opacity-75">Confirmed</small>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-6 col-lg-3">
+        <div class="card bg-success text-white h-100">
+            <div class="card-body text-center p-3">
+                <i class="bi bi-check-all fs-1 mb-2 opacity-75"></i>
+                <h3 class="mb-1 fw-bold">{{ completed_orders }}</h3>
+                <small class="opacity-75">Completed</small>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Quick Actions -->
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="bi bi-lightning-fill me-2"></i>Quick Actions
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="row g-2">
+                    <div class="col-6 col-md-3">
+                        <a href="{% url 'admin_orders' %}?status=pending_payment" class="btn btn-warning w-100 position-relative">
+                            <i class="bi bi-exclamation-triangle me-1"></i>
+                            <span class="d-none d-sm-inline">Pending Orders</span>
+                            <span class="d-sm-none">Pending</span>
+                            {% if orders_need_attention > 0 %}
+                                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                    {{ orders_need_attention }}
+                                </span>
+                            {% endif %}
+                        </a>
+                    </div>
+                    <div class="col-6 col-md-3">
+                        <a href="{% url 'admin_orders' %}" class="btn btn-primary w-100">
+                            <i class="bi bi-list me-1"></i>
+                            <span class="d-none d-sm-inline">All Orders</span>
+                            <span class="d-sm-none">Orders</span>
+                        </a>
+                    </div>
+                    <div class="col-6 col-md-3">
+                        <a href="{% url 'admin_product_add' %}" class="btn btn-success w-100">
+                            <i class="bi bi-plus-circle me-1"></i>
+                            <span class="d-none d-sm-inline">Add Product</span>
+                            <span class="d-sm-none">Add</span>
+                        </a>
+                    </div>
+                    <div class="col-6 col-md-3">
+                        <a href="{% url 'admin_settings' %}" class="btn btn-outline-primary w-100">
+                            <i class="bi bi-gear me-1"></i>
+                            <span class="d-none d-sm-inline">Settings</span>
+                            <span class="d-sm-none">Settings</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Today's Summary -->
+{% if today_orders > 0 %}
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="alert alert-info border-0">
+            <div class="d-flex align-items-center">
+                <i class="bi bi-calendar-check fs-4 me-3"></i>
+                <div>
+                    <h6 class="mb-1">Today's Activity</h6>
+                    <p class="mb-0">{{ today_orders }} new order{{ today_orders|pluralize }} received today</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+<!-- Recent Orders -->
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">
+                    <i class="bi bi-clock-history me-2"></i>Recent Orders
+                </h5>
+                <a href="{% url 'admin_orders' %}" class="btn btn-sm btn-outline-primary">
+                    View All <i class="bi bi-arrow-right ms-1"></i>
+                </a>
+            </div>
+            <div class="card-body p-0">
+                {% if recent_orders %}
+                    <!-- Mobile-friendly order cards -->
+                    <div class="d-block d-lg-none">
+                        {% for order in recent_orders %}
+                            <div class="border-bottom p-3">
+                                <div class="d-flex justify-content-between align-items-start mb-2">
+                                    <div>
+                                        <h6 class="mb-1 fw-bold">{{ order.full_name }}</h6>
+                                        <small class="text-muted">{{ order.mobile_number }}</small>
+                                    </div>
+                                    <span class="badge 
+                                        {% if order.status == 'pending_payment' %}bg-warning text-dark
+                                        {% elif order.status == 'confirmed' %}bg-info
+                                        {% elif order.status == 'in_progress' %}bg-primary
+                                        {% elif order.status == 'completed' %}bg-success
+                                        {% else %}bg-danger
+                                        {% endif %}">
+                                        {{ order.get_status_display }}
+                                    </span>
+                                </div>
+                                
+                                <div class="row g-2 mb-2">
+                                    <div class="col-6">
+                                        <small class="text-muted">Order ID:</small><br>
+                                        <small class="font-monospace">{{ order.order_id|truncatechars:12 }}</small>
+                                    </div>
+                                    <div class="col-6">
+                                        <small class="text-muted">Amount:</small><br>
+                                        <strong class="text-success">₹{{ order.total_amount }}</strong>
+                                    </div>
+                                </div>
+                                
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <small class="text-muted">{{ order.created_at|date:"M d, H:i" }}</small>
+                                    <a href="{% url 'admin_order_detail' order.order_id %}" class="btn btn-sm btn-primary">
+                                        <i class="bi bi-eye me-1"></i>View
+                                    </a>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                    
+                    <!-- Desktop table -->
+                    <div class="d-none d-lg-block">
+                        <div class="table-responsive">
+                            <table class="table table-hover mb-0">
+                                <thead>
+                                    <tr>
+                                        <th>Order ID</th>
+                                        <th>Customer</th>
+                                        <th>Status</th>
+                                        <th>Amount</th>
+                                        <th>Date</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for order in recent_orders %}
+                                        <tr>
+                                            <td>
+                                                <small class="font-monospace text-muted">{{ order.order_id|truncatechars:12 }}</small>
+                                            </td>
+                                            <td>
+                                                <div>
+                                                    <strong>{{ order.full_name }}</strong><br>
+                                                    <small class="text-muted">{{ order.mobile_number }}</small>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <span class="badge 
+                                                    {% if order.status == 'pending_payment' %}bg-warning text-dark
+                                                    {% elif order.status == 'confirmed' %}bg-info
+                                                    {% elif order.status == 'in_progress' %}bg-primary
+                                                    {% elif order.status == 'completed' %}bg-success
+                                                    {% else %}bg-danger
+                                                    {% endif %}">
+                                                    {{ order.get_status_display }}
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <strong class="text-success">₹{{ order.total_amount }}</strong>
+                                            </td>
+                                            <td>
+                                                <small>{{ order.created_at|date:"M d, H:i" }}</small>
+                                            </td>
+                                            <td>
+                                                <a href="{% url 'admin_order_detail' order.order_id %}" class="btn btn-sm btn-primary">
+                                                    <i class="bi bi-eye"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                {% else %}
+                    <div class="text-center py-5">
+                        <i class="bi bi-inbox text-muted" style="font-size: 4rem; opacity: 0.5;"></i>
+                        <h5 class="text-muted mt-3">No Orders Yet</h5>
+                        <p class="text-muted">Orders will appear here once customers start placing them</p>
+                        <a href="{% url 'admin_product_add' %}" class="btn btn-primary">
+                            <i class="bi bi-plus-circle me-2"></i>Add Your First Product
+                        </a>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+.card.bg-primary,
+.card.bg-success,
+.card.bg-warning,
+.card.bg-info {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card.bg-primary:hover,
+.card.bg-success:hover,
+.card.bg-warning:hover,
+.card.bg-info:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 35px rgba(0,0,0,0.15);
+}
+
+@media (max-width: 576px) {
+    .card-body {
+        padding: 1rem 0.75rem;
+    }
+    
+    .btn {
+        font-size: 0.875rem;
+    }
+    
+    .fs-1 {
+        font-size: 2rem !important;
+    }
+}
+</style>
+{% endblock %}

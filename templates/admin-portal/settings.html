@@ -1,0 +1,411 @@
+{% extends 'admin-portal/base.html' %}
+{% load static %}
+
+{% block title %}Settings - Admin Portal{% endblock %}
+
+{% block content %}
+<div class="row mb-3 mb-md-4">
+    <div class="col-12">
+        <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+            <div>
+                <h2 class="mb-1 fw-bold text-primary h4 h-md-2">
+                    <i class="bi bi-gear-fill me-2"></i>Website Settings
+                </h2>
+                <small class="text-muted d-block">Configure your business information</small>
+            </div>
+            <a href="{% url 'admin_dashboard' %}" class="btn btn-outline-secondary btn-sm">
+                <i class="bi bi-arrow-left me-1"></i><span class="d-none d-sm-inline">Back</span>
+            </a>
+        </div>
+    </div>
+</div>
+
+<form method="post">
+    {% csrf_token %}
+    
+    <div class="row g-3">
+        <!-- Basic Information -->
+        <div class="col-12">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">
+                        <i class="bi bi-building me-2"></i>Basic Information
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <label for="{{ form.site_name.id_for_label }}" class="form-label fw-bold">
+                            <i class="bi bi-shop me-1 text-primary"></i>Business Name
+                        </label>
+                        {{ form.site_name }}
+                        {% if form.site_name.errors %}
+                            <div class="text-danger small mt-1">{{ form.site_name.errors.0 }}</div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="{{ form.tagline.id_for_label }}" class="form-label fw-bold">
+                            <i class="bi bi-chat-quote me-1 text-primary"></i>Tagline
+                        </label>
+                        {{ form.tagline }}
+                        {% if form.tagline.errors %}
+                            <div class="text-danger small mt-1">{{ form.tagline.errors.0 }}</div>
+                        {% endif %}
+                        <small class="text-muted">A short description of your business</small>
+                    </div>
+                    
+                    <div class="mb-0">
+                        <label for="{{ form.website_url.id_for_label }}" class="form-label fw-bold">
+                            <i class="bi bi-globe me-1 text-primary"></i>Website URL
+                        </label>
+                        {{ form.website_url }}
+                        {% if form.website_url.errors %}
+                            <div class="text-danger small mt-1">{{ form.website_url.errors.0 }}</div>
+                        {% endif %}
+                        <small class="text-muted">Your website URL (used in Telegram notifications)</small>
+                    </div>
+                    
+                    <div class="mb-0">
+                        <label for="{{ form.address.id_for_label }}" class="form-label fw-bold">
+                            <i class="bi bi-geo-alt me-1 text-primary"></i>Business Address
+                        </label>
+                        {{ form.address }}
+                        {% if form.address.errors %}
+                            <div class="text-danger small mt-1">{{ form.address.errors.0 }}</div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Contact Details -->
+        <div class="col-12">
+            <div class="card shadow-sm">
+                <div class="card-header bg-success text-white">
+                    <h5 class="mb-0">
+                        <i class="bi bi-telephone-fill me-2"></i>Contact Details
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label for="{{ form.contact_phone.id_for_label }}" class="form-label fw-bold">
+                                <i class="bi bi-phone me-1 text-success"></i>Contact Phone
+                            </label>
+                            {{ form.contact_phone }}
+                            {% if form.contact_phone.errors %}
+                                <div class="text-danger small mt-1">{{ form.contact_phone.errors.0 }}</div>
+                            {% endif %}
+                            <small class="text-muted">Include country code (e.g., +91)</small>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <label for="{{ form.whatsapp_number.id_for_label }}" class="form-label fw-bold">
+                                <i class="bi bi-whatsapp me-1 text-success"></i>WhatsApp Number
+                            </label>
+                            {{ form.whatsapp_number }}
+                            {% if form.whatsapp_number.errors %}
+                                <div class="text-danger small mt-1">{{ form.whatsapp_number.errors.0 }}</div>
+                            {% endif %}
+                            <small class="text-muted">For customer support</small>
+                        </div>
+                        
+                        <div class="col-12">
+                            <label for="{{ form.contact_email.id_for_label }}" class="form-label fw-bold">
+                                <i class="bi bi-envelope me-1 text-success"></i>Contact Email
+                            </label>
+                            {{ form.contact_email }}
+                            {% if form.contact_email.errors %}
+                                <div class="text-danger small mt-1">{{ form.contact_email.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Payment Settings -->
+        <div class="col-12">
+            <div class="card shadow-sm">
+                <div class="card-header bg-warning text-dark">
+                    <h5 class="mb-0">
+                        <i class="bi bi-credit-card-fill me-2"></i>Payment Settings
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="mb-0">
+                        <label for="{{ form.upi_id.id_for_label }}" class="form-label fw-bold">
+                            <i class="bi bi-wallet2 me-1 text-warning"></i>UPI ID
+                        </label>
+                        {{ form.upi_id }}
+                        {% if form.upi_id.errors %}
+                            <div class="text-danger small mt-1">{{ form.upi_id.errors.0 }}</div>
+                        {% endif %}
+                        <small class="text-muted">Your UPI ID for receiving payments (e.g., business@paytm)</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Social Media -->
+        <div class="col-12">
+            <div class="card shadow-sm">
+                <div class="card-header bg-info text-white">
+                    <h5 class="mb-0">
+                        <i class="bi bi-share-fill me-2"></i>Social Media (Optional)
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label for="{{ form.instagram_url.id_for_label }}" class="form-label fw-bold">
+                                <i class="bi bi-instagram me-1" style="color: #E4405F;"></i>Instagram URL
+                            </label>
+                            {{ form.instagram_url }}
+                            {% if form.instagram_url.errors %}
+                                <div class="text-danger small mt-1">{{ form.instagram_url.errors.0 }}</div>
+                            {% endif %}
+                            <small class="text-muted">Your Instagram profile link</small>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <label for="{{ form.facebook_url.id_for_label }}" class="form-label fw-bold">
+                                <i class="bi bi-facebook me-1" style="color: #1877F2;"></i>Facebook URL
+                            </label>
+                            {{ form.facebook_url }}
+                            {% if form.facebook_url.errors %}
+                                <div class="text-danger small mt-1">{{ form.facebook_url.errors.0 }}</div>
+                            {% endif %}
+                            <small class="text-muted">Your Facebook page link</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Business Settings -->
+        <div class="col-12">
+            <div class="card shadow-sm">
+                <div class="card-header bg-secondary text-white">
+                    <h5 class="mb-0">
+                        <i class="bi bi-clock-fill me-2"></i>Business Settings
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label for="{{ form.processing_time_days.id_for_label }}" class="form-label fw-bold">
+                                <i class="bi bi-hourglass-split me-1 text-secondary"></i>Processing Time (Days)
+                            </label>
+                            {{ form.processing_time_days }}
+                            {% if form.processing_time_days.errors %}
+                                <div class="text-danger small mt-1">{{ form.processing_time_days.errors.0 }}</div>
+                            {% endif %}
+                            <small class="text-muted">Days to create the product</small>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <label for="{{ form.delivery_time_days.id_for_label }}" class="form-label fw-bold">
+                                <i class="bi bi-truck me-1 text-secondary"></i>Delivery Time (Days)
+                            </label>
+                            {{ form.delivery_time_days }}
+                            {% if form.delivery_time_days.errors %}
+                                <div class="text-danger small mt-1">{{ form.delivery_time_days.errors.0 }}</div>
+                            {% endif %}
+                            <small class="text-muted">Days for delivery after production</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Notification Settings -->
+        <div class="col-12">
+            <div class="card shadow-sm border-primary">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">
+                        <i class="bi bi-bell-fill me-2"></i>Order Notifications (Telegram)
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="alert alert-info mb-3">
+                        <i class="bi bi-info-circle me-2"></i>
+                        <strong>Get instant notifications on your phone when new orders arrive!</strong>
+                        <details class="mt-2">
+                            <summary class="cursor-pointer text-primary fw-bold">📱 How to setup Telegram notifications</summary>
+                            <ol class="mt-2 mb-0 small">
+                                <li>Open Telegram and search for <strong>@BotFather</strong></li>
+                                <li>Send <code>/newbot</code> and follow instructions to create your bot</li>
+                                <li>Copy the <strong>Bot Token</strong> (looks like: 1234567890:ABCdefGHIjklMNOpqrsTUVwxyz)</li>
+                                <li>Search for <strong>@userinfobot</strong> on Telegram</li>
+                                <li>Send any message to get your <strong>Chat ID</strong> (a number like: 123456789)</li>
+                                <li>Paste both values below and enable notifications</li>
+                                <li>Start a chat with your bot by searching for it and clicking "Start"</li>
+                            </ol>
+                        </details>
+                    </div>
+                    
+                    <div class="row g-3">
+                        <div class="col-12">
+                            <div class="form-check form-switch mb-3">
+                                {{ form.enable_telegram_notifications }}
+                                <label class="form-check-label fw-bold" for="{{ form.enable_telegram_notifications.id_for_label }}">
+                                    <i class="bi bi-toggle-on me-1 text-success"></i>Enable Telegram Notifications
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <label for="{{ form.telegram_bot_token.id_for_label }}" class="form-label fw-bold">
+                                <i class="bi bi-key me-1 text-primary"></i>Telegram Bot Token
+                            </label>
+                            {{ form.telegram_bot_token }}
+                            {% if form.telegram_bot_token.errors %}
+                                <div class="text-danger small mt-1">{{ form.telegram_bot_token.errors.0 }}</div>
+                            {% endif %}
+                            <small class="text-muted">Get from @BotFather on Telegram</small>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <label for="{{ form.telegram_chat_id.id_for_label }}" class="form-label fw-bold">
+                                <i class="bi bi-person-badge me-1 text-primary"></i>Your Telegram Chat ID
+                            </label>
+                            {{ form.telegram_chat_id }}
+                            {% if form.telegram_chat_id.errors %}
+                                <div class="text-danger small mt-1">{{ form.telegram_chat_id.errors.0 }}</div>
+                            {% endif %}
+                            <small class="text-muted">Get from @userinfobot on Telegram</small>
+                        </div>
+                    </div>
+                    
+                    <div class="alert alert-success mt-3 mb-0">
+                        <i class="bi bi-check-circle me-2"></i>
+                        <small>Once configured, you'll receive instant notifications on your phone for every new order!</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Save Button -->
+        <div class="col-12">
+            <div class="card shadow-sm border-0 bg-gradient sticky-save-btn">
+                <div class="card-body text-center p-3 p-md-4">
+                    <button type="submit" class="btn btn-success btn-lg px-4 px-md-5 shadow-lg">
+                        <i class="bi bi-check-circle-fill me-2"></i>Save All Settings
+                    </button>
+                    <div class="mt-2 mt-md-3">
+                        <small class="text-muted d-block">
+                            <i class="bi bi-info-circle me-1"></i>
+                            Changes will be reflected immediately
+                        </small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<!-- Test Telegram Button (Separate, at bottom) -->
+<div class="row g-3 mt-4">
+    <div class="col-12">
+        <div class="card shadow-sm border-info">
+            <div class="card-body text-center p-4">
+                <h5 class="mb-3">
+                    <i class="bi bi-send-check me-2 text-info"></i>Test Telegram Notifications
+                </h5>
+                <p class="text-muted mb-3">
+                    Send a test message to verify your Telegram bot is working correctly
+                </p>
+                <a href="{% url 'test_telegram' %}" class="btn btn-info btn-lg px-5">
+                    <i class="bi bi-send me-2"></i>Send Test Message
+                </a>
+                <div class="mt-3">
+                    <small class="text-muted">
+                        <i class="bi bi-info-circle me-1"></i>
+                        Make sure to save your settings before testing
+                    </small>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block extra_css %}
+<style>
+.bg-gradient {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+}
+
+.card {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.1) !important;
+}
+
+.form-control:focus,
+.form-select:focus {
+    border-color: #667eea;
+    box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+}
+
+.card-header {
+    font-size: 1rem;
+    padding: 0.875rem 1.25rem;
+}
+
+.card-header h5 {
+    font-size: 1rem;
+    margin-bottom: 0;
+}
+
+@media (max-width: 768px) {
+    .btn-lg {
+        width: 100%;
+        padding: 0.875rem 1rem;
+        font-size: 1rem;
+    }
+    
+    .card-body {
+        padding: 1rem;
+    }
+    
+    .card-header {
+        padding: 0.75rem 1rem;
+        font-size: 0.9rem;
+    }
+    
+    .form-label {
+        font-size: 0.875rem;
+        margin-bottom: 0.375rem;
+    }
+    
+    .form-label i {
+        font-size: 0.875rem;
+    }
+    
+    small.text-muted {
+        font-size: 0.75rem;
+    }
+    
+    .sticky-save-btn {
+        position: sticky;
+        bottom: 70px;
+        z-index: 100;
+        margin-bottom: 0;
+    }
+}
+
+@media (min-width: 769px) {
+    .sticky-save-btn {
+        position: sticky;
+        bottom: 20px;
+        z-index: 100;
+    }
+}
+</style>
+{% endblock %}
