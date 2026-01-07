@@ -142,7 +142,14 @@
     <a href="{% url 'product_list' %}" class="floating-shop d-lg-none" aria-label="Shop">
         <i class="bi bi-bag-fill fs-4"></i>
     </a>
-    
+
+    {# Floating Instagram button (mobile). Visible only if settings.instagram_url is configured #}
+    {% if settings and settings.instagram_url %}
+        <a href="{{ settings.instagram_url }}" class="floating-ig d-lg-none" aria-label="Instagram" target="_blank" rel="noopener noreferrer">
+            <i class="bi bi-instagram fs-4"></i>
+        </a>
+    {% endif %}
+
     {% block extra_js %}{% endblock %}
 </body>
 </html> 

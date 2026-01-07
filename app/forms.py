@@ -187,6 +187,17 @@ class ProductForm(forms.ModelForm):
 
 
 class WebsiteSettingsForm(forms.ModelForm):
+    # Friendly username field for Instagram (we generate the full URL on save)
+    instagram_username = forms.CharField(
+        required=False,
+        label='Instagram Username',
+        widget=forms.TextInput(attrs={
+            'class': 'form-control',
+            'placeholder': 'e.g., yourshop (without @)'
+        }),
+        help_text='Enter the username only; the full Instagram URL will be generated automatically.'
+    )
+
     class Meta:
         model = WebsiteSettings
         fields = [
@@ -208,7 +219,7 @@ class WebsiteSettingsForm(forms.ModelForm):
             }),
             'whatsapp_number': forms.TextInput(attrs={'class': 'form-control'}),
             'address': forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
-            'instagram_url': forms.URLInput(attrs={'class': 'form-control'}),
+            'instagram_url': forms.URLInput(attrs={'class': 'form-control', 'placeholder': 'Full Instagram URL (auto-generated from username)'}),
             'facebook_url': forms.URLInput(attrs={'class': 'form-control'}),
             'telegram_bot_token': forms.TextInput(attrs={'class': 'form-control', 'placeholder': '1234567890:ABCdefGHIjklMNOpqrsTUVwxyz'}),
             'telegram_chat_id': forms.TextInput(attrs={'class': 'form-control', 'placeholder': '123456789'}),
@@ -216,6 +227,31 @@ class WebsiteSettingsForm(forms.ModelForm):
             'processing_time_days': forms.NumberInput(attrs={'class': 'form-control', 'min': '1'}),
             'delivery_time_days': forms.NumberInput(attrs={'class': 'form-control', 'min': '1'}),
         }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Pre-fill instagram_username from instagram_url if present
+        try:
+            from urllib.parse import urlparse
+            url = getattr(self.instance, 'instagram_url', '')
+            if url:
+                parsed = urlparse(url)
+                path = parsed.path.strip('/')
+                if path:
+                    username = path.split('/')[-1].lstrip('@')
+                    self.fields['instagram_username'].initial = username
+        except Exception:
+            pass
+
+    def save(self, commit=True):
+        username = self.cleaned_data.get('instagram_username')
+        if username:
+            username = username.strip().lstrip('@')
+            self.instance.instagram_url = f'https://instagram.com/{username}/'
+        else:
+            # keep whatever is in instagram_url or clear
+            self.instance.instagram_url = self.cleaned_data.get('instagram_url') or ''
+        return super().save(commit=commit)
 
 
 class BannerForm(forms.ModelForm):

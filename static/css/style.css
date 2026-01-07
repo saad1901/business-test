@@ -159,6 +159,29 @@ body {
 }
 .floating-shop:hover { transform: translateY(-3px); }
 
+/* Instagram floating button (mobile) - placed to the left of the shop button */
+.floating-ig {
+    position: fixed;
+    right: calc(16px + 56px + 12px); /* 16px gutter + shop width + 12px spacing */
+    bottom: 20px;
+    z-index: 1050;
+    background: linear-gradient(45deg,#f58529 0%,#dd2a7b 50%,#8134af 100%); /* instagram gradient */
+    color: white;
+    width: 56px;
+    height: 56px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    box-shadow: 0 8px 28px rgba(0,0,0,0.12);
+}
+.floating-ig:hover { transform: translateY(-3px); }
+
+/* Fallback: on very narrow screens stack them vertically to avoid overflow */
+@media (max-width: 360px) {
+    .floating-ig { right: 16px; bottom: 86px; }
+}
+
 /* Improve spacing between sections on mobile */
 @media (max-width: 576px) {
     section { padding-top: 1.5rem; padding-bottom: 1.5rem; }
