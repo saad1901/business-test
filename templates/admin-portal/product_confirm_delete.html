@@ -1,0 +1,63 @@
+{% extends 'admin-portal/base.html' %}
+{% load static %}
+
+{% block title %}Delete Product - Admin Portal{% endblock %}
+
+{% block content %}
+
+<div class="row mb-4">
+    <div class="col-12">
+        <h2 class="mb-0">
+            <i class="bi bi-exclamation-triangle me-2 text-danger"></i>Delete Product
+        </h2>
+        <small class="text-muted">This action cannot be undone</small>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12 col-lg-6 offset-lg-3">
+        <div class="card border-danger shadow-sm">
+            <div class="card-header bg-danger text-white">
+                <h5 class="mb-0">Are you sure?</h5>
+            </div>
+            <div class="card-body">
+                <!-- Product Preview -->
+                {% if product.images.first %}
+                    <img src="{{ product.images.first.image.url }}" class="img-fluid rounded mb-4" alt="{{ product.name }}" style="max-height: 300px; width: 100%; object-fit: cover;">
+                {% endif %}
+
+                <div class="mb-4">
+                    <h5 class="text-danger mb-2">{{ product.name }}</h5>
+                    {% if product.description %}
+                        <p class="text-muted mb-2">{{ product.description|truncatewords:30 }}</p>
+                    {% endif %}
+                    <p class="mb-0 small">
+                        <strong>Price:</strong> ₹{{ product.base_price }}<br>
+                        <strong>Created:</strong> {{ product.created_at|date:"M d, Y" }}
+                    </p>
+                </div>
+
+                <!-- Warning Message -->
+                <div class="alert alert-danger" role="alert">
+                    <i class="bi bi-exclamation-circle me-2"></i>
+                    <strong>Warning:</strong> Deleting this product cannot be undone. It will be permanently removed from your site along with its images and related customization data.
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="d-grid gap-2 d-md-flex justify-content-md-between">
+                    <a href="{% url 'admin_products' %}" class="btn btn-secondary">
+                        <i class="bi bi-x-circle me-2"></i>Cancel
+                    </a>
+                    <form method="post" style="display: inline;">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-danger">
+                            <i class="bi bi-trash me-2"></i>Delete Product
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

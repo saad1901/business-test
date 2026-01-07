@@ -25,6 +25,7 @@ urlpatterns = [
     path('admin-portal/products/', admin_views.admin_products, name='admin_products'),
     path('admin-portal/products/add/', admin_views.admin_product_add, name='admin_product_add'),
     path('admin-portal/products/<int:product_id>/edit/', admin_views.admin_product_edit, name='admin_product_edit'),
+    path('admin-portal/products/<int:product_id>/delete/', admin_views.admin_product_delete, name='admin_product_delete'),
     path('admin-portal/settings/', admin_views.admin_settings, name='admin_settings'),
     path('admin-portal/test-telegram/', admin_views.test_telegram_notification, name='test_telegram'),
     path('payment/upi-qr/', views_qr.upi_qr, name='upi_qr'),

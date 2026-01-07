@@ -388,6 +388,23 @@ def admin_banner_delete(request, banner_id):
 
 
 @user_passes_test(is_admin)
+def admin_product_delete(request, product_id):
+    """Delete product"""
+    product = get_object_or_404(Product, id=product_id)
+
+    if request.method == 'POST':
+        product_name = product.name
+        # Deleting product will cascade to related ProductImage via models if configured
+        product.delete()
+        messages.success(request, f'Product "{product_name}" deleted successfully!')
+        return redirect('admin_products')
+
+    return render(request, 'admin-portal/product_confirm_delete.html', {
+        'product': product,
+    })
+
+
+@user_passes_test(is_admin)
 def admin_update_order_status(request):
     """AJAX endpoint to update order status"""
     if request.method == 'POST':
