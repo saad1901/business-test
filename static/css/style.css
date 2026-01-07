@@ -1,22 +1,174 @@
 /* Custom Resin Art Website Styles */
 
 :root {
-    --primary-color: #667eea;
-    --secondary-color: #764ba2;
-    --accent-color: #ffc107;
-    --success-color: #28a745;
-    --info-color: #17a2b8;
-    --warning-color: #ffc107;
-    --danger-color: #dc3545;
-    --light-color: #f8f9fa;
-    --dark-color: #343a40;
+    /* Girly / pastel palette */
+    --primary-color: #ff6b8a;   /* rose */
+    --secondary-color: #ffd1dc; /* pale pink */
+    --accent-color: #ffd6a5;    /* peach */
+    --success-color: #6bd99e;
+    --info-color: #7adcf6;
+    --warning-color: #ffb86b;
+    --danger-color: #ff6b6b;
+    --light-color: #fff8fb;
+    --dark-color: #3b3a3a;
 }
 
 /* Global Styles */
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     line-height: 1.6;
     color: #333;
+    background-color: #fffafc;
+}
+
+/* Soft adjustments for mobile-first */
+.btn {
+    border-radius: 20px;
+    padding: 0.6rem 1.25rem;
+}
+
+.btn-primary {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.btn-primary:hover {
+    background-color: darken(var(--primary-color), 5%);
+}
+
+/* CTA behavior on very small screens: stack and full width */
+.hero-cta { gap: 0.75rem; }
+@media (max-width: 576px) {
+    .hero-cta { flex-direction: column; align-items: stretch; }
+    .hero-cta .btn { width: 100%; display: block; padding: 0.8rem; }
+    .product-card .card-body .btn { width: 100%; }
+}
+
+/* soften badges */
+.badge {
+    background-color: rgba(255, 255, 255, 0.12);
+    color: #fff;
+    border-radius: 999px;
+    padding: 0.45em 0.7em;
+}
+
+/* Hero looks more pastel */
+.hero-section {
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+    position: relative;
+    overflow: hidden;
+    border-radius: 12px;
+    padding-top: 4rem;
+    padding-bottom: 4rem;
+}
+
+.hero-section .display-4 {
+    color: #ffffff;
+    font-weight: 700;
+}
+
+.hero-section .lead {
+    color: rgba(255,255,255,0.95) !important;
+}
+
+/* Card and product tweaks for softer look */
+.card { border-radius: 16px; }
+.product-card { border: none; box-shadow: 0 8px 30px rgba(0,0,0,0.06); }
+
+/* Make icons and small text in hero a softer white */
+.hero-cta .btn i { color: #fff; opacity: 0.95; }
+
+/* Slightly larger touch targets for product lists */
+.product-card .card-body { padding: 1rem; }
+.product-card .card-title { font-weight: 600; }
+
+/* Make images rounder */
+.card-img-top { border-radius: 12px; }
+
+/* Reduce carousel control size for a gentler look */
+.carousel-control-prev, .carousel-control-next { width: 6%; }
+
+/* Ensure readable spacing on small devices */
+@media (max-width: 768px) {
+    .hero-section { padding-top: 3rem; padding-bottom: 3rem; }
+    .hero-section .display-4 { font-size: 1.8rem; }
+    .hero-section .lead { font-size: 1rem; }
+}
+
+/* Use softer accent color for warning buttons */
+.btn-warning { background-color: var(--accent-color); border-color: var(--accent-color); color: #000; }
+.btn-warning:hover { background-color: #f0b66a; }
+
+/* keep other existing rules intact (below) */
+
+/* Decorative heart in hero */
+.hero-heart {
+    display: inline-block;
+    color: rgba(255,255,255,0.95);
+    font-size: 1.05rem;
+    transform: translateY(-2px);
+    opacity: 0.95;
+}
+
+/* Primary button subtle gradient + pulse animation */
+.btn-primary {
+    background: linear-gradient(135deg, var(--primary-color), #ff5475);
+    border: none;
+    color: #fff;
+    box-shadow: 0 6px 20px rgba(255, 107, 138, 0.08);
+}
+.btn-primary:focus {
+    box-shadow: 0 8px 30px rgba(255, 107, 138, 0.18);
+    outline: none;
+}
+.btn-primary.pulse {
+    animation: pulse 2.6s infinite;
+}
+@keyframes pulse {
+    0% { transform: translateY(0); box-shadow: 0 6px 20px rgba(255, 107, 138, 0.08); }
+    50% { transform: translateY(-3px); box-shadow: 0 12px 30px rgba(255, 107, 138, 0.12); }
+    100% { transform: translateY(0); box-shadow: 0 6px 20px rgba(255, 107, 138, 0.08); }
+}
+
+/* Product card adjustments for mobile tap targets and soft look */
+.product-card .card-body {
+    padding: 1.25rem;
+}
+.product-card .card-title {
+    font-size: 1.05rem;
+}
+.product-card .btn {
+    border-radius: 12px;
+}
+
+/* Floating shop button (mobile) */
+.floating-shop {
+    position: fixed;
+    right: 16px;
+    bottom: 20px;
+    z-index: 1050;
+    background: linear-gradient(135deg, var(--primary-color), #ff5475);
+    color: white;
+    width: 56px;
+    height: 56px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+}
+.floating-shop:hover { transform: translateY(-3px); }
+
+/* Improve spacing between sections on mobile */
+@media (max-width: 576px) {
+    section { padding-top: 1.5rem; padding-bottom: 1.5rem; }
+    .product-card .card-body { padding: 1rem; }
+    .hero-cta .btn { font-size: 1rem; }
+}
+
+/* Optional: make hero CTA primary button pulse on load */
+@media (prefers-reduced-motion: no-preference) {
+    .hero-cta .btn-primary { animation: pulse 4s ease-in-out 1s 1; }
 }
 
 .text-primary {

@@ -13,6 +13,7 @@
                 <div class="col-lg-6">
                     <h1 class="display-4 fw-bold mb-4">
                         Beautiful Custom <span class="text-warning">Resin Art</span>
+                        <span class="hero-heart ms-2" aria-hidden="true">❤</span>
                     </h1>
                     <p class="lead mb-4">
                         Transform your precious memories and favorite words into stunning resin keychains and personalized gifts. Each piece is handcrafted by Leena with love and attention to detail.
@@ -66,6 +67,7 @@
                 <div class="col-lg-6">
                     <h1 class="display-4 fw-bold mb-4">
                         Beautiful Custom <span class="text-warning">Resin Art</span>
+                        <span class="hero-heart ms-2" aria-hidden="true">❤</span>
                     </h1>
                     <p class="lead mb-4">
                         Transform your precious memories and favorite words into stunning resin keychains and personalized gifts. Each piece is handcrafted by Leena with love and attention to detail.
@@ -302,7 +304,17 @@
 .banner-label strong {
     font-size: 1rem;
 }
-.banner-label .text-muted {
+
+/* Make hero subtitle white and non-bold */
+.hero-section .lead {
+    color: #ffffff !important;
+    font-weight: 400; /* normal weight */
+}
+.banner-label .text-muted,
+.hero-right-carousel .banner-label small,
+.hero-right-carousel .banner-label .text-muted {
+    color: #ffffff !important;
+    opacity: 0.95;
     font-size: 0.85rem;
 }
 @media (max-width: 992px) {
