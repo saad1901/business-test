@@ -23,6 +23,18 @@
             <div class="card-body">
                 <form method="post" enctype="multipart/form-data">
                     {% csrf_token %}
+
+                    {# Show non-field and all other errors at top for easier debugging #}
+                    {% if form.non_field_errors or form.errors %}
+                        <div class="alert alert-danger" role="alert">
+                            {% if form.non_field_errors %}
+                                {{ form.non_field_errors|join:", " }}<br>
+                            {% endif %}
+                            {% for field, errors in form.errors.items %}
+                                <strong>{{ field }}:</strong> {{ errors|join:", " }}<br>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
                     
                     <!-- Basic Information -->
                     <div class="mb-4">
@@ -30,11 +42,6 @@
                             <i class="bi bi-info-circle me-2"></i>Basic Information
                         </h6>
                         
-                        {% if form.title.errors %}
-                            <div class="alert alert-danger" role="alert">
-                                {{ form.title.errors }}
-                            </div>
-                        {% endif %}
                         <div class="mb-3">
                             <label for="{{ form.title.id_for_label }}" class="form-label">Banner Title</label>
                             <input type="text" name="{{ form.title.name }}" class="form-control" id="{{ form.title.id_for_label }}" value="{{ form.title.value|default:'' }}" required>
@@ -107,6 +114,24 @@
                         <div class="mb-3">
                             <input type="file" class="form-control" id="{{ form.image.id_for_label }}" name="image" accept="image/*">
                             <small class="form-text text-muted">Recommended size: 1920x600px or larger. Formats: JPG, PNG</small>
+                        </div>
+                    </div>
+
+                    <!-- Display Settings -->
+                    <div class="mb-4">
+                        <h6 class="text-uppercase text-muted small mb-3">
+                            <i class="bi bi-eye me-2"></i>Display Settings
+                        </h6>
+
+                        <div class="mb-3 form-check">
+                            <input type="checkbox" name="{{ form.is_active.name }}" class="form-check-input" id="{{ form.is_active.id_for_label }}" {% if form.is_active.value %}checked{% endif %}>
+                            <label for="{{ form.is_active.id_for_label }}" class="form-check-label">Active</label>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="{{ form.order.id_for_label }}" class="form-label">Display Order</label>
+                            <input type="number" name="{{ form.order.name }}" class="form-control" id="{{ form.order.id_for_label }}" value="{{ form.order.value|default:'0' }}" min="0">
+                            <small class="form-text text-muted">Lower numbers appear first. If unsure, leave as 0.</small>
                         </div>
                     </div>
 

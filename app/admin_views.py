@@ -325,9 +325,22 @@ def admin_banner_add(request):
     if request.method == 'POST':
         form = BannerForm(request.POST, request.FILES)
         if form.is_valid():
-            banner = form.save()
-            messages.success(request, f'Banner "{banner.title}" created successfully!')
-            return redirect('admin_banners')
+            try:
+                banner = form.save()
+                messages.success(request, f'Banner "{banner.title}" created successfully!')
+                return redirect('admin_banners')
+            except Exception as e:
+                # Log and show user-friendly error
+                import traceback
+                traceback.print_exc()
+                messages.error(request, f'Error saving banner: {str(e)}')
+        else:
+            # Show form errors at top so admin can see what's wrong
+            error_list = []
+            for field, errors in form.errors.items():
+                for err in errors:
+                    error_list.append(f"{field}: {err}")
+            messages.error(request, 'Please fix the following errors: ' + '; '.join(error_list))
     else:
         form = BannerForm()
     

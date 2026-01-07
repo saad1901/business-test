@@ -178,15 +178,15 @@
 
                     <!-- Form Actions -->
                     <div class="sticky-action-bar">
-                        <div class="d-grid gap-2 d-md-flex justify-content-md-end gap-md-2 pt-3 border-top">
-                            <a href="{% url 'admin_products' %}" class="btn btn-light">
+                        <div class="d-flex justify-content-end gap-2 flex-nowrap pt-3 border-top">
+                            <a href="{% url 'admin_products' %}" class="btn btn-light btn-sm">
                                 <i class="bi bi-x-circle me-2"></i>Cancel
                             </a>
-                            <button type="submit" class="btn btn-primary btn-lg">
+                            <button type="submit" class="btn btn-primary btn-sm">
                                 <i class="bi bi-check-circle me-2"></i>Save Product
                             </button>
                         </div>
-                    </div>
+                    </div>"
                 </form>
             </div>
         </div>
@@ -248,9 +248,14 @@
         border-radius: 16px 16px 0 0;
     }
     
+    /* Keep buttons compact on small screens and ensure btn-sm stays small */
     .sticky-action-bar .btn {
-        font-size: 1rem;
-        padding: 0.875rem 1.25rem;
+        font-size: 0.95rem;
+        padding: 0.5rem 0.75rem;
+    }
+    .sticky-action-bar .btn-sm {
+        font-size: 0.85rem;
+        padding: 0.25rem 0.5rem;
     }
 }
 

@@ -8,39 +8,57 @@
 <section class="hero-section bg-gradient-primary text-white py-5">
     <div class="container">
         {% if banners %}
-            <!-- Banner Carousel -->
-            <div id="heroCarousel" class="carousel slide mb-4" data-bs-ride="carousel">
-                <div class="carousel-inner">
-                    {% for banner in banners %}
-                        <div class="carousel-item {% if forloop.first %}active{% endif %}">
-                            <div class="row align-items-center min-vh-50">
-                                <div class="col-lg-6">
-                                    <h1 class="display-4 fw-bold mb-4">{{ banner.title }}</h1>
-                                    {% if banner.subtitle %}
-                                        <p class="lead mb-4">{{ banner.subtitle }}</p>
-                                    {% endif %}
-                                    {% if banner.link_url and banner.link_text %}
-                                        <a href="{{ banner.link_url }}" class="btn btn-warning btn-lg px-4">
-                                            {{ banner.link_text }}
-                                        </a>
-                                    {% endif %}
-                                </div>
-                                <div class="col-lg-6 text-center">
-                                    <img src="{{ banner.image.url }}" alt="{{ banner.title }}" class="img-fluid rounded-3 shadow-lg" style="max-height: 400px; object-fit: cover;">
-                                </div>
-                            </div>
-                        </div>
-                    {% endfor %}
+            <!-- Hero with persistent logo and a small carousel of banners below it -->
+            <div class="row align-items-center min-vh-50">
+                <div class="col-lg-6">
+                    <h1 class="display-4 fw-bold mb-4">
+                        Beautiful Custom <span class="text-warning">Resin Art</span>
+                    </h1>
+                    <p class="lead mb-4">
+                        Transform your precious memories and favorite words into stunning resin keychains and personalized gifts. Each piece is handcrafted by Leena with love and attention to detail.
+                    </p>
+                    <div class="d-flex gap-3 flex-nowrap align-items-center hero-cta">
+                        <a href="{% url 'product_list' %}" class="btn btn-warning btn-lg px-4">
+                            <i class="bi bi-bag me-2"></i>Shop Now
+                        </a>
+                        <a href="#how-it-works" class="btn btn-outline-light btn-lg px-4">
+                            <i class="bi bi-play-circle me-2"></i>How It Works
+                        </a>
+                    </div>
                 </div>
-                
-                {% if banners|length > 1 %}
-                    <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
-                        <span class="carousel-control-prev-icon"></span>
-                    </button>
-                    <button class="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next">
-                        <span class="carousel-control-next-icon"></span>
-                    </button>
-                {% endif %}
+                <div class="col-lg-6 text-center">
+                    <!-- logo removed to avoid duplication above banners -->
+
+                    <div id="rightBannerCarousel" class="carousel slide hero-right-carousel mt-3" data-bs-ride="carousel" data-bs-touch="true">
+                        <div class="carousel-inner">
+                            {% for banner in banners %}
+                                <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                                    <img src="{{ banner.image.url }}" class="d-block w-100 rounded-3 shadow-sm" alt="{{ banner.title }}" style="width:100%;">
+                                    <div class="banner-label mt-2 text-center">
+                                        <strong class="d-block">{{ banner.title }}</strong>
+                                        {% if banner.subtitle %}
+                                            <small class="text-muted d-block">{{ banner.subtitle }}</small>
+                                        {% endif %}
+                                        {% if banner.link_url and banner.link_text %}
+                                            <a href="{{ banner.link_url }}" class="btn btn-dark btn-sm mt-2">{{ banner.link_text }}</a>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+
+                        {% if banners|length > 1 %}
+                            <button class="carousel-control-prev" type="button" data-bs-target="#rightBannerCarousel" data-bs-slide="prev">
+                                <span class="carousel-control-prev-icon"></span>
+                                <span class="visually-hidden">Previous</span>
+                            </button>
+                            <button class="carousel-control-next" type="button" data-bs-target="#rightBannerCarousel" data-bs-slide="next">
+                                <span class="carousel-control-next-icon"></span>
+                                <span class="visually-hidden">Next</span>
+                            </button>
+                        {% endif %}
+                    </div>
+                </div>
             </div>
         {% else %}
             <!-- Default Hero Content -->
@@ -52,14 +70,14 @@
                     <p class="lead mb-4">
                         Transform your precious memories and favorite words into stunning resin keychains and personalized gifts. Each piece is handcrafted by Leena with love and attention to detail.
                     </p>
-                    <div class="d-flex gap-3 flex-wrap">
+                    <div class="d-flex gap-3 flex-nowrap align-items-center hero-cta">
                         <a href="{% url 'product_list' %}" class="btn btn-warning btn-lg px-4">
                             <i class="bi bi-bag me-2"></i>Shop Now
                         </a>
                         <a href="#how-it-works" class="btn btn-outline-light btn-lg px-4">
                             <i class="bi bi-play-circle me-2"></i>How It Works
                         </a>
-                    </div>
+                    </div>"
                 </div>
                 <div class="col-lg-6 text-center">
                     <div class="bg-gradient-warning rounded-3 shadow-lg d-flex align-items-center justify-content-center" style="min-height: 400px; padding: 20px;">
@@ -257,6 +275,47 @@
 
 .bg-gradient-primary {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+/* Keep hero CTA buttons on the same line */
+.hero-cta {
+    flex-wrap: nowrap !important;
+    overflow-x: auto; /* allow scroll on very small screens rather than wrapping */
+}
+.hero-cta .btn {
+    white-space: nowrap;
+}
+
+/* Right-side logo + banner carousel */
+.hero-right-logo .logo {
+    max-height: 260px;
+    max-width: 100%;
+}
+.hero-right-carousel .carousel-item img {
+    max-height: 220px;
+    object-fit: cover;
+    border-radius: 12px;
+}
+.banner-label {
+    margin-top: 0.5rem;
+}
+.banner-label strong {
+    font-size: 1rem;
+}
+.banner-label .text-muted {
+    font-size: 0.85rem;
+}
+@media (max-width: 992px) {
+    .hero-right-logo .logo { max-height: 200px; }
+    .hero-right-carousel .carousel-item img { max-height: 180px; }
+}
+
+@media (max-width: 576px) {
+    /* Make buttons compact to better fit narrow screens */
+    .hero-cta .btn {
+        padding: 0.4rem 0.8rem;
+        font-size: 0.9rem;
+    }
 }
 </style>
 {% endblock %}
